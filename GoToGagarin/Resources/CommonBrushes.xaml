@@ -1,4 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+    <Color x:Key="BackgroundControlColor">#F1DCBA</Color>
+    <Color x:Key="BackgroundGrabButtonColor">#677686</Color>
+    <Color x:Key="BackgroundCloseButtonColor">#3F92B2</Color>
+
+    <Color x:Key="ObjectNameForegroundColor">#CA2534</Color>
+
+    <SolidColorBrush Color="{StaticResource BackgroundControlColor}" x:Key="BackgroundControl"/>
+    <SolidColorBrush Color="{StaticResource BackgroundGrabButtonColor}" x:Key="BackgroundGrabButton"/>
+    <SolidColorBrush Color="{StaticResource BackgroundCloseButtonColor}" x:Key="BackgroundCloseButton"/>
+
+    <SolidColorBrush Color="{StaticResource ObjectNameForegroundColor}" x:Key="ObjectNameForeground"/>
 </ResourceDictionary>

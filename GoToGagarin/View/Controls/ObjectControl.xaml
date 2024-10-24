@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="GoToGagarin.View.Controls.ObjectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GoToGagarin.View.Controls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    
+    <Grid Width="1080" Height="1920" Background="Green"
+            x:Name="MainCanvas">
+        
+        <Border Width="1080"
+                VerticalAlignment="Bottom"
+                x:Name="MainBorder"
+                Height="278"
+                CornerRadius="32 32 0 0"
+                Background="{StaticResource BackgroundControl}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="120"/>
+                </Grid.RowDefinitions>
+                <Button Template="{StaticResource GrabButtonTemplate}" 
+                        Width="248" Height="6" Margin="0 8 0 0"
+                        VerticalAlignment="Top">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseDown">
+                            <b:InvokeCommandAction
+                                Command="{Binding IsDraggingCommand}"
+                                PassEventArgsToCommand="True"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Button>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center"
+                            Margin="0 46 0 0">
+                    <ContentPresenter ContentTemplate="{StaticResource MuseumIcon}" Width="64" Height="64"/>
+                    <TextBlock Text="Историко-Краеведческий музей"
+                               Style="{StaticResource ObjectNameTextStyle}"
+                               FontWeight="Bold" Margin="24 0"
+                               TextAlignment="Left"  Width="700"
+                               FontSize="40" Foreground="{StaticResource ObjectNameForeground}"/>
+                    <Button Template="{StaticResource ContentPresenterButtonTemplate}"
+                            ContentTemplate="{DynamicResource CloseIcon}"
+                            Width="40" Height="40"/>
+                </StackPanel>
+                <local:ObjectInfoControl Grid.Row="1" Margin="0 32 0 0"/>
+                <Button Grid.Row="2" Margin="64 32 0 32"
+                        Template="{StaticResource BuildRoute}"/>
+            </Grid>
+                
+        </Border>
+    </Grid>
+</UserControl>

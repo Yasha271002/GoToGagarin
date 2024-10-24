@@ -9,16 +9,54 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\Converters\" />
+    <None Remove="Resources\Fonts\GrandisExtended-Black.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-BlackItalic.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-BoldItalic.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-Light.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-LightItalic.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-Medium.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-MediumItalic.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-Regular.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-RegularItalic.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-Thin.ttf" />
+    <None Remove="Resources\Fonts\GrandisExtended-ThinItalic.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Resources\Image\" />
-    <Folder Include="Utilities\" />
     <Folder Include="Model\" />
-    <Folder Include="ViewModel\Pages\" />
-    <Folder Include="ViewModel\Popups\" />
+    <Folder Include="ViewModel\Popup\" />
     <Folder Include="ViewModel\Window\" />
-    <Folder Include="View\Pages\" />
-    <Folder Include="View\Controls\" />
     <Folder Include="View\Popups\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Core">
+      <HintPath>Library\Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomKeyboard">
+      <HintPath>Library\CustomKeyboard.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\GrandisExtended-Black.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-BlackItalic.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-BoldItalic.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-Light.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-LightItalic.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-Medium.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-MediumItalic.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-Regular.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-RegularItalic.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-Thin.ttf" />
+    <Resource Include="Resources\Fonts\GrandisExtended-ThinItalic.ttf" />
   </ItemGroup>
 
 </Project>
