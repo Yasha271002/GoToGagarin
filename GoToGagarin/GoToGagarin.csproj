@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Resources\Image\" />
-    <Folder Include="Model\" />
     <Folder Include="ViewModel\Popup\" />
     <Folder Include="ViewModel\Window\" />
     <Folder Include="View\Popups\" />
@@ -32,16 +31,20 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="HostBuilder.Extensions" Version="1.2.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Refit" Version="7.2.1" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="7.2.1" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="7.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Core">
-      <HintPath>Library\Core.dll</HintPath>
-    </Reference>
     <Reference Include="CustomKeyboard">
       <HintPath>Library\CustomKeyboard.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmNavigationLib">
+      <HintPath>Library\MvvmNavigationLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 

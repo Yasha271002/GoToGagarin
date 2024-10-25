@@ -3,7 +3,7 @@
     <FontFamily x:Key="Grandis">pack://application:,,,/Resources/Fonts/#Grandis Extended</FontFamily>
 
     <Style TargetType="TextBlock" x:Key="ObjectNameTextStyle">
-        <Setter Property="FontFamily" Value="{StaticResource Grandis}"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FontFamily" Value="{StaticResource Grandis}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 </ResourceDictionary>

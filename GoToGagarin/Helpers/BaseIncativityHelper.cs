@@ -1,5 +1,5 @@
-﻿using System.Windows.Threading;
-using GoToGagarin.Utilities;
+﻿using GoToGagarin.Utilities;
+using System.Windows.Threading;
 
 namespace GoToGagarin.Helpers
 {

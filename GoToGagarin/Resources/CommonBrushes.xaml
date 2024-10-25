@@ -5,10 +5,16 @@
     <Color x:Key="BackgroundCloseButtonColor">#3F92B2</Color>
 
     <Color x:Key="ObjectNameForegroundColor">#CA2534</Color>
+    <Color x:Key="DescriptionForegroundColor">#46576A</Color>
 
-    <SolidColorBrush Color="{StaticResource BackgroundControlColor}" x:Key="BackgroundControl"/>
-    <SolidColorBrush Color="{StaticResource BackgroundGrabButtonColor}" x:Key="BackgroundGrabButton"/>
-    <SolidColorBrush Color="{StaticResource BackgroundCloseButtonColor}" x:Key="BackgroundCloseButton"/>
+    <Color x:Key="DescriptionBackgroundColor">#F9ECDC</Color>
 
-    <SolidColorBrush Color="{StaticResource ObjectNameForegroundColor}" x:Key="ObjectNameForeground"/>
+    <SolidColorBrush Color="{StaticResource BackgroundControlColor}" x:Key="BackgroundControl" />
+    <SolidColorBrush Color="{StaticResource BackgroundGrabButtonColor}" x:Key="BackgroundGrabButton" />
+    <SolidColorBrush Color="{StaticResource BackgroundCloseButtonColor}" x:Key="BackgroundCloseButton" />
+
+    <SolidColorBrush Color="{StaticResource ObjectNameForegroundColor}" x:Key="ObjectNameForeground" />
+    <SolidColorBrush Color="{StaticResource DescriptionForegroundColor}" x:Key="DescriptionForeGround" />
+
+    <SolidColorBrush Color="{StaticResource DescriptionBackgroundColor}" x:Key="DescriptionBackground" />
 </ResourceDictionary>

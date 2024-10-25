@@ -2,13 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ControlTemplate x:Key="GrabButtonTemplate" TargetType="Button">
         <Border CornerRadius="3"
-                Background="{StaticResource BackgroundGrabButton}"/>
+                Background="{StaticResource BackgroundGrabButton}" />
     </ControlTemplate>
 
     <ControlTemplate x:Key="ContentPresenterButtonTemplate" TargetType="Button">
         <Border Background="{StaticResource BackgroundCloseButton}"
                 CornerRadius="16" Padding="8">
-            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentTemplate="{TemplateBinding ContentTemplate}" />
         </Border>
     </ControlTemplate>
 
@@ -17,23 +17,23 @@
                 Background="{StaticResource BackgroundCloseButton}">
             <Grid>
                 <ContentPresenter ContentTemplate="{StaticResource RouteIcon}" Height="24"
-                                  HorizontalAlignment="Left"/>
+                                  HorizontalAlignment="Left" />
                 <TextBlock Text="Проложить маршрут"
                            Style="{StaticResource ObjectNameTextStyle}"
                            FontSize="20"
                            FontWeight="Medium"
                            Foreground="White"
                            HorizontalAlignment="Left"
-                           Margin="48 0 0 0"/>
+                           Margin="48 0 0 0" />
                 <TextBlock Text="12 минут"
                            Style="{StaticResource ObjectNameTextStyle}"
                            FontSize="20"
                            FontWeight="Medium"
                            Foreground="White"
                            HorizontalAlignment="Right"
-                           Margin="0 0 48 0"/>
+                           Margin="0 0 48 0" />
                 <ContentPresenter ContentTemplate="{StaticResource WalkIcon}" Height="24"
-                                  HorizontalAlignment="Right"/>
+                                  HorizontalAlignment="Right" />
             </Grid>
         </Border>
     </ControlTemplate>

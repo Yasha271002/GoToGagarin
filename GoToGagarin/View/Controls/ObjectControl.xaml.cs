@@ -1,7 +1,6 @@
-﻿using System.Windows;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Core;
 
 namespace GoToGagarin.View.Controls
 {
@@ -15,9 +14,8 @@ namespace GoToGagarin.View.Controls
             InitializeComponent();
         }
 
-        private ICommand? _isDraggingCommand;
-
-        public ICommand IsDraggingCommand => _isDraggingCommand ??= new RelayCommand(async f =>
+        [RelayCommand]
+        public async void IsDragging(MouseButtonEventArgs f)
         {
             if (f is not MouseButtonEventArgs e)
                 return;
@@ -35,11 +33,10 @@ namespace GoToGagarin.View.Controls
                     _ => newHeight
                 };
 
-                MainBorder.Height = newHeight; 
+                MainBorder.Height = newHeight;
 
                 await Task.Delay(10);
             }
-        });
-
+        }
     }
 }

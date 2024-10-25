@@ -11,31 +11,18 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
+        d:DataContext="{d:DesignInstance window:MainWindowViewModel}"
         Title="MainWindow">
-    <Window.DataContext>
-        <window:MainWindowViewModel/>
-    </Window.DataContext>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction
+                Command="{Binding LoadedCommand}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
     <Viewbox>
         <Grid Width="1080" Height="1920">
-           
-            <controls:ObjectControl/>
 
-            <controls:BackdropControl
-                EnableAnimation="True"
-                VerticalContentAlignment="Center"
-                HorizontalContentAlignment="Center"
-                BackdropBrush="Black"
-                IsOpen="{Binding IsPopupOpen
-                ,Source={x:Static helpers:NavigationManager.Instance}}"
-                BackdropOpacity="0.5"
-                Panel.ZIndex="1000"
-                d:IsHidden="True">
-                <Frame NavigationUIVisibility="Hidden"
-                   Focusable="False"
-                   HorizontalContentAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   Initialized="PopupFrame_OnInitialized" />
-            </controls:BackdropControl>
+            <controls:ObjectControl DataContext="{Binding InfoViewModel}" />
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
