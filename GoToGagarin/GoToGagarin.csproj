@@ -20,10 +20,10 @@
     <None Remove="Resources\Fonts\GrandisExtended-RegularItalic.ttf" />
     <None Remove="Resources\Fonts\GrandisExtended-Thin.ttf" />
     <None Remove="Resources\Fonts\GrandisExtended-ThinItalic.ttf" />
+    <None Remove="Resources\Image\CarIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Image\" />
     <Folder Include="ViewModel\Popup\" />
     <Folder Include="ViewModel\Window\" />
     <Folder Include="View\Popups\" />
@@ -40,8 +40,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CommonControls">
+      <HintPath>Library\CommonControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Core">
+      <HintPath>Library\Core.dll</HintPath>
+    </Reference>
     <Reference Include="CustomKeyboard">
       <HintPath>Library\CustomKeyboard.dll</HintPath>
+    </Reference>
+    <Reference Include="MainComponents">
+      <HintPath>Library\MainComponents.dll</HintPath>
     </Reference>
     <Reference Include="MvvmNavigationLib">
       <HintPath>Library\MvvmNavigationLib.dll</HintPath>
@@ -60,6 +69,7 @@
     <Resource Include="Resources\Fonts\GrandisExtended-RegularItalic.ttf" />
     <Resource Include="Resources\Fonts\GrandisExtended-Thin.ttf" />
     <Resource Include="Resources\Fonts\GrandisExtended-ThinItalic.ttf" />
+    <Resource Include="Resources\Image\CarIcon.png" />
   </ItemGroup>
 
 </Project>

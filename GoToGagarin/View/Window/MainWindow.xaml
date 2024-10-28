@@ -1,12 +1,10 @@
 ﻿<Window x:Class="GoToGagarin.View.Window.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GoToGagarin"
-        xmlns:controls="clr-namespace:GoToGagarin.View.Controls"
-        xmlns:helpers="clr-namespace:GoToGagarin.Helpers"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:GoToGagarin.View.Controls"
         xmlns:window="clr-namespace:GoToGagarin.ViewModel.Window"
         mc:Ignorable="d"
         WindowState="Maximized"
@@ -21,8 +19,10 @@
     </b:Interaction.Triggers>
     <Viewbox>
         <Grid Width="1080" Height="1920">
-
-            <controls:ObjectControl DataContext="{Binding InfoViewModel}" />
+            <controls:ObjectControl DataContext="{Binding InfoViewModel}" Visibility="Visible" />
+            <controls:SearchControl VerticalAlignment="Bottom" DataContext="{Binding SearchViewModel}" Visibility="Hidden" />
+            <controls:NavigationControl Height="420" VerticalAlignment="Bottom"
+                                        DataContext="{Binding NavigationViewModel}" Visibility="Hidden" />
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"

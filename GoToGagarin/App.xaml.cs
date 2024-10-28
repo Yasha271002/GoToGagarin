@@ -39,11 +39,12 @@ namespace GoToGagarin
                     //        s.GetRequiredService<IMainApiClient>(),
                     //        s.GetRequiredService<ImageLoadingHttpClient>(),
                     //        terminalId));
+
+                    services.AddSingleton<MapViewModel>();
+                    services.AddSingleton<ObjectInfoViewModel>();
+                    services.AddSingleton<SearchViewModel>();
+                    services.AddSingleton<NavigationViewModel>();
                     services.AddSingleton<MainWindowViewModel>();
-                    services.AddSingleton<ObjectInfoViewModel>
-                    (s => new ObjectInfoViewModel(
-                        s.GetRequiredService<IMainApiClient>(),
-                        s.GetRequiredService<ImageLoadingHttpClient>()));
                     services.AddSingleton<MainWindow>(
                         s => new MainWindow
                         {

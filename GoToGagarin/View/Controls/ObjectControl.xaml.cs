@@ -29,7 +29,7 @@ namespace GoToGagarin.View.Controls
                 newHeight = newHeight switch
                 {
                     > 1870 => 1856,
-                    < 258 => 278,
+                    < 278 => 298,
                     _ => newHeight
                 };
 

@@ -7,77 +7,7 @@
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-    <UserControl.Resources>
-        <Style TargetType="{x:Type TabControl}">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabControl}">
-                        <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True">
-                            <Border DockPanel.Dock="{TemplateBinding TabStripPlacement}"
-                                    CornerRadius="16"
-                                    Background="#F9ECDC" Height="68">
-                                <TabPanel
-                                    Name="HeaderPanel"
-                                    Panel.ZIndex="1"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center"
-                                    IsItemsHost="True"
-                                    KeyboardNavigation.TabIndex="1"
-                                    Background="Transparent" />
-                            </Border>
-                            <Border Margin="0 32 0 0"
-                                Name="Border"
-                                Background="Transparent">
-                                <ContentPresenter
-                                    ContentSource="SelectedContent" />
-                            </Border>
-                        </DockPanel>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="Black" />
-                                <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
-        <Style TargetType="TabItem">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabItem}">
-                        <Border x:Name="PART_Border" Background="{TemplateBinding Background}"
-                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Margin="0,0,8,0" CornerRadius="16" Padding="50,0,50,0"
-                                Width="400" Height="52">
-
-                            <TextBlock Text="{TemplateBinding Header}"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="20"
-                                       Style="{StaticResource ObjectNameTextStyle}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{StaticResource BackgroundCloseButton}" />
-                                <Setter Property="Foreground" Value="#FFFFFF" />
-                            </Trigger>
-
-                            <Trigger Property="IsSelected" Value="false">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="{StaticResource BackgroundCloseButton}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction
@@ -95,7 +25,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center"
                     Margin="0 46 0 0" VerticalAlignment="Center">
             <ContentPresenter ContentTemplate="{StaticResource MuseumIcon}" Width="64" Height="64" />
-            <TextBlock Text="{Binding SelectObject.Title}"
+            <TextBlock Text="{Binding MapVM.SelectObject.Title}"
                        Style="{StaticResource ObjectNameTextStyle}"
                        FontWeight="Bold" Margin="24 0" HorizontalAlignment="Center"
                        TextAlignment="Center"  Width="700" VerticalAlignment="Center"
@@ -112,10 +42,10 @@
                             Background="{StaticResource DescriptionBackground}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                   FontSize="34" FontWeight="Bold" Text="{Binding SelectObject.Title}"
+                                   FontSize="34" FontWeight="Bold" Text="{Binding MapVM.SelectObject.Title}"
                                    Foreground="{StaticResource ObjectNameForeground}"  Margin="0 0 0 24" />
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                   FontSize="20" FontWeight="Normal" Text="{Binding SelectObject.Description}"
+                                   FontSize="20" FontWeight="Normal" Text="{Binding MapVM.SelectObject.Description}"
                                    Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Justify" />
                         </StackPanel>
                     </Border>
@@ -123,7 +53,7 @@
             </TabItem>
             <TabItem Header="Фото">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <ItemsControl ItemsSource="{Binding SelectObject.Images}">
+                    <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Images}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Margin="0 32 0 0 " />
@@ -131,19 +61,19 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Border CornerRadius="16 16 0 0">
+                                <StackPanel Width="472" Height="466" Margin="2">
+                                    <Border CornerRadius="16 " Height="466">
                                         <Border.Background>
-                                            <ImageBrush ImageSource="{Binding Image,Converter={StaticResource ImageConverter}}" />
+                                            <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill" />
                                         </Border.Background>
-                                    </Border>
-                                    <Border CornerRadius="0 0 16 16">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="#3F92B2" Opacity="0.2" />
-                                        </Border.Background>
-                                        <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                               Text="{Binding Title}"
-                                        FontSize="16" FontWeight="Medium" Foreground="White" />
+                                        <Border CornerRadius="0 0 16 16" Height="60" VerticalAlignment="Bottom">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
+                                            </Border.Background>
+                                            <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                                                       Text="{Binding Title}"
+                                                       FontSize="16" FontWeight="Medium" Foreground="White" />
+                                        </Border>
                                     </Border>
                                 </StackPanel>
                             </DataTemplate>

@@ -10,15 +10,23 @@ namespace GoToGagarin.ViewModel.Window;
 public partial class MainWindowViewModel : ObservableObject
 {
     private readonly DispatcherTimer _timer = new();
-    private int _sec;
     private readonly InactivityHelper _inactivityHelper;
 
-    [ObservableProperty] private ObjectInfoViewModel _infoViewModel;
+    private int _sec;
 
-    public MainWindowViewModel(InactivityHelper inactivityHelper, ObjectInfoViewModel infoViewModel)
+    [ObservableProperty] private ObjectInfoViewModel _infoViewModel;
+    [ObservableProperty] private NavigationViewModel _navigationViewModel;
+    [ObservableProperty] private SearchViewModel _searchViewModel;
+
+    public MainWindowViewModel(InactivityHelper inactivityHelper,
+        ObjectInfoViewModel infoViewModel,
+        NavigationViewModel navigationViewModel,
+        SearchViewModel searchViewModel)
     {
         _inactivityHelper = inactivityHelper;
         _infoViewModel = infoViewModel;
+        _navigationViewModel = navigationViewModel;
+        _searchViewModel = searchViewModel;
         _inactivityHelper.OnInactivity += _inactivityHelper_OnInactivity;
     }
 
@@ -35,7 +43,10 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Loaded() => ExplorerHelper.KillExplorer();
+    private void Loaded()
+    {
+        ExplorerHelper.KillExplorer();
+    }
 
     [RelayCommand]
     private void StopTimer()

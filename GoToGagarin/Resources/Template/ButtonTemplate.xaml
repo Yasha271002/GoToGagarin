@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:CustomKeyboard.Views.Controls;assembly=CustomKeyboard">
     <ControlTemplate x:Key="GrabButtonTemplate" TargetType="Button">
         <Border CornerRadius="3"
                 Background="{StaticResource BackgroundGrabButton}" />
@@ -8,7 +9,8 @@
     <ControlTemplate x:Key="ContentPresenterButtonTemplate" TargetType="Button">
         <Border Background="{StaticResource BackgroundCloseButton}"
                 CornerRadius="16" Padding="8">
-            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" ContentTemplate="{TemplateBinding ContentTemplate}" />
+            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
         </Border>
     </ControlTemplate>
 
@@ -36,5 +38,54 @@
                                   HorizontalAlignment="Right" />
             </Grid>
         </Border>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type controls:KeyboardKeyButton}">
+        <Setter Property="HighlightedBackground" Value="#23394E" />
+        <Setter Property="HighlightedForeground" Value="#FFFFFF" />
+        <Setter Property="Foreground" Value="#FFFFFF" />
+        <Setter Property="Background" Value="#23394E" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontFamily" Value="{StaticResource Grandis}" />
+    </Style>
+
+    <ControlTemplate x:Key="SearchObjectButton" TargetType="Button">
+        <Border
+            BorderThickness="0 0 0 1" CornerRadius="16"
+            BorderBrush="#677686" Padding="16 ">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource BackgroundControl}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}" Value="True">
+                            <Setter Property="Background" Value="{StaticResource DescriptionBackground}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel Orientation="Horizontal">
+                <ContentPresenter ContentTemplate="{StaticResource PositionIcon}" Height="24" />
+                <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                           Foreground="{StaticResource ObjectNameForeground}"
+                           Text="{Binding Title}"
+                           Margin="8 0 0 0"
+                           FontSize="20" FontWeight="Medium" />
+            </StackPanel>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DoubleIconTemplate" TargetType="Button">
+        <Grid>
+            <Border BorderBrush="#CA2534" BorderThickness="3" Height="50" CornerRadius="3" Width="6"
+                    VerticalAlignment="Center" />
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Ellipse Fill="#CA2534" Width="24" Height="24" />
+                <Ellipse Width="12" Height="12" Fill="#23394E" />
+            </Grid>
+            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Ellipse Width="24" Height="24" Fill="#23394E" />
+                <Ellipse Width="12" Height="12" Fill="#CA2534" />
+            </Grid>
+        </Grid>
     </ControlTemplate>
 </ResourceDictionary>

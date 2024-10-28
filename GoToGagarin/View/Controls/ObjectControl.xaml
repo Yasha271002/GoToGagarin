@@ -12,7 +12,7 @@
         <Border Width="1080"
                 VerticalAlignment="Bottom"
                 x:Name="MainBorder"
-                Height="258"
+                Height="298"
                 CornerRadius="32 32 0 0"
                 Background="{StaticResource BackgroundControl}">
             <Grid>
