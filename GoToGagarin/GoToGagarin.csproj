@@ -52,6 +52,9 @@
     <Reference Include="MainComponents">
       <HintPath>Library\MainComponents.dll</HintPath>
     </Reference>
+    <Reference Include="MapControlLib">
+      <HintPath>Library\MapControlLib.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmNavigationLib">
       <HintPath>Library\MvvmNavigationLib.dll</HintPath>
     </Reference>

@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:GoToGagarin.View.Controls"
         xmlns:window="clr-namespace:GoToGagarin.ViewModel.Window"
+        xmlns:mapControlLib="clr-namespace:MapControlLib;assembly=MapControlLib"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
@@ -19,10 +20,27 @@
     </b:Interaction.Triggers>
     <Viewbox>
         <Grid Width="1080" Height="1920">
+           
             <controls:ObjectControl DataContext="{Binding InfoViewModel}" Visibility="Visible" />
             <controls:SearchControl VerticalAlignment="Bottom" DataContext="{Binding SearchViewModel}" Visibility="Hidden" />
             <controls:NavigationControl Height="420" VerticalAlignment="Bottom"
                                         DataContext="{Binding NavigationViewModel}" Visibility="Hidden" />
+            <mapControlLib:Map
+                x:Name="Map"
+                ZoomMin="1"
+                StartZoom="3"
+                ZoomMax="10"
+                DataContext="{Binding MapViewModel}"
+                Floors="{Binding Floors}"
+                Areas="{Binding Areas}"
+                MapObjects="{Binding MapObjects}"
+                TerminalArea="{Binding TerminalArea}"
+                StrokeThickness="20"
+                StrokeDashArray="10 10"
+                ArrowLength="50"
+                EndWithArrow="True"
+                StrokeDashCap="Round"
+                OnMapObjectSelectedCommand="{Binding SelectMapObjectCommand}"/>
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"

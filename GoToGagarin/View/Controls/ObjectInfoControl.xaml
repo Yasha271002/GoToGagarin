@@ -7,7 +7,6 @@
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction

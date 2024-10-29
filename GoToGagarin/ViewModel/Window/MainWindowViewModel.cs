@@ -17,6 +17,7 @@ public partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private ObjectInfoViewModel _infoViewModel;
     [ObservableProperty] private NavigationViewModel _navigationViewModel;
     [ObservableProperty] private SearchViewModel _searchViewModel;
+    [ObservableProperty] private MapViewModel _mapViewModel;
 
     public MainWindowViewModel(InactivityHelper inactivityHelper,
         ObjectInfoViewModel infoViewModel,

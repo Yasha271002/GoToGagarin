@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MapControlLib.Models;
+using Newtonsoft.Json;
 
 namespace GoToGagarin.Model;
 
@@ -15,4 +16,12 @@ public class MapObjectsModel
 
     //[JsonProperty("area")]
     //public int Area { get; set; }
+}
+
+public class Terminal
+{
+    [JsonProperty("id")] public int Id { get; set; }
+    [JsonProperty("name")] public string? Name { get; set; }
+    [JsonProperty("node")] public int? Node { get; set; }
+    [JsonProperty("area")] public int? Area { get; set; }
 }

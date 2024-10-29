@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:GoToGagarin.View.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:ObjectInfoControl}">
-    <Grid Width="1080" Height="1920" Background="Green"
+    <Grid Width="1080" Height="1920" Background="Transparent"
             x:Name="MainCanvas">
         <Border Width="1080"
                 VerticalAlignment="Bottom"
