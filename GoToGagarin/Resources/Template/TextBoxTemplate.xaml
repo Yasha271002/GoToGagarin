@@ -9,7 +9,7 @@
             <Grid>
                 <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
                     <ContentPresenter ContentTemplate="{StaticResource SearchIcon}"
-                                      Margin="16" />
+                                      Margin="16"/>
                     <TextBlock
                         Text="{TemplateBinding Tag}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -34,6 +34,9 @@
                 </ScrollViewer>
                 <Button Template="{StaticResource ContentPresenterButtonTemplate}"
                         ContentTemplate="{DynamicResource CloseIcon}"
+                        Background="{StaticResource BackgroundCloseButton}"
+                        Command="{Binding CloseCommand}"
+                        Padding="8"
                         Width="40" Height="40"
                         Margin="904 0 0 0" />
             </Grid>

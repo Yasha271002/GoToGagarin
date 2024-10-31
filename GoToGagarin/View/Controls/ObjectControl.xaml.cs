@@ -1,6 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using GoToGagarin.ViewModel.Controls;
 
 namespace GoToGagarin.View.Controls
 {
@@ -15,10 +18,13 @@ namespace GoToGagarin.View.Controls
         }
 
         [RelayCommand]
-        public async void IsDragging(MouseButtonEventArgs f)
+        private async void IsDragging(MouseButtonEventArgs f)
         {
             if (f is not MouseButtonEventArgs e)
                 return;
+
+            MainBorder.ApplyAnimationClock(Border.HeightProperty, null);
+
             while (e.ButtonState == MouseButtonState.Pressed)
             {
                 var newPos = e.GetPosition(MainCanvas);
@@ -33,6 +39,7 @@ namespace GoToGagarin.View.Controls
                     _ => newHeight
                 };
 
+                ContentSlider.Visibility = newHeight > 1600 ? Visibility.Hidden : Visibility.Visible;
                 MainBorder.Height = newHeight;
 
                 await Task.Delay(10);

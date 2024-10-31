@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:CustomKeyboard.Views;assembly=CustomKeyboard"
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
+             xmlns:controls1="clr-namespace:CustomKeyboard.Views.Controls;assembly=CustomKeyboard"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:SearchViewModel}">
     <StackPanel>
@@ -25,7 +26,9 @@
                         <DataTemplate>
                             <Button Template="{DynamicResource SearchObjectButton}"
                                     Margin="5"
-                                    Height="56" />
+                                    Height="56" 
+                                    Command="{Binding DataContext.SelectObjectCommand,RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                    CommandParameter="{Binding }"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -56,7 +59,8 @@
             Height="829">
             <views:KeyboardControl Margin=" 0 64"
                                    KeyBaseHeight="72"
-                                   KeyBaseWidth="72" />
+                                   KeyBaseWidth="72" >
+            </views:KeyboardControl>
         </Border>
     </StackPanel>
 </UserControl>

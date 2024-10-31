@@ -7,13 +7,6 @@
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-    <b:Interaction.Triggers>
-        <b:EventTrigger EventName="Loaded">
-            <b:InvokeCommandAction
-                Command="{Binding LoadedCommand}" />
-        </b:EventTrigger>
-    </b:Interaction.Triggers>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
@@ -31,6 +24,9 @@
                        FontSize="40" Foreground="{StaticResource ObjectNameForeground}" />
             <Button Template="{StaticResource ContentPresenterButtonTemplate}"
                     ContentTemplate="{DynamicResource CloseIcon}"
+                    Background="{StaticResource BackgroundCloseButton}"
+                    Padding="8"
+                    Command="{Binding CloseCommand}"
                     Width="40" Height="40" />
         </StackPanel>
         <TabControl Grid.Row="1" Margin="0 32 0 0">
@@ -52,7 +48,9 @@
             </TabItem>
             <TabItem Header="Фото">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Images}">
+                    <ItemsControl 
+                        ItemsSource="{Binding MapVM.SelectObject.Images}">
+                        
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Margin="0 32 0 0 " />
@@ -60,21 +58,48 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Width="472" Height="466" Margin="2">
-                                    <Border CornerRadius="16 " Height="466">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill" />
-                                        </Border.Background>
+                                <Border Width="472" Height="466" Margin="2"
+                                        CornerRadius="16">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
+                                    </Border.Background>
+                                    <Grid>
+                                        <Border CornerRadius="16 " Height="466">
+                                            <Border.Background>
+                                                <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill" />
+                                            </Border.Background>
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Opacity" Value="0" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Opacity" Value="0">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </Trigger>
+                                                        <EventTrigger RoutedEvent="Loaded">
+                                                            <BeginStoryboard>
+                                                                <Storyboard TargetProperty="Opacity">
+                                                                    <DoubleAnimation To="1"
+                                                                    Duration="0:0:0.5"
+                                                                    BeginTime="0:0:0.5" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
                                         <Border CornerRadius="0 0 16 16" Height="60" VerticalAlignment="Bottom">
                                             <Border.Background>
                                                 <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
                                             </Border.Background>
                                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                                       Text="{Binding Title}"
-                                                       FontSize="16" FontWeight="Medium" Foreground="White" />
+                                                   Text="{Binding Title}"
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                   FontSize="16" FontWeight="Medium" Foreground="White" />
                                         </Border>
-                                    </Border>
-                                </StackPanel>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -83,6 +108,7 @@
         </TabControl>
         <Button Grid.Row="2" Margin="64 32 64 32"
                 VerticalAlignment="Bottom"
-                Template="{StaticResource BuildRoute}" />
+                Template="{StaticResource BuildRoute}"
+                Command="{Binding NavigateCommand}"/>
     </Grid>
 </UserControl>

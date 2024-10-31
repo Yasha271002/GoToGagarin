@@ -18,12 +18,26 @@ public partial class SearchViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void TextChanged()
+    private void SelectObject(MapObjectsModel model)
+    {
+        MapViewModel.SelectObject = model;
+        MapViewModel.Visible.SwitchControlVisible(ControlVisible.IsInfo);
+        SearchObjectName = "";
+    }
+
+    [RelayCommand]
+    private void Close()
+    {
+        MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);
+        SearchObjectName = "";
+    }
+
+    [RelayCommand]
+    private void TextChanged()
     {
         FoundObjects!.Clear();
 
         if (string.IsNullOrWhiteSpace(SearchObjectName)) return;
-        if (MapViewModel.MapObjects == null) return;
 
         var foundItems = MapViewModel.MapObjects
             .Where(f => f.Title != null &&

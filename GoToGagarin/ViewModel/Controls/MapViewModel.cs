@@ -18,16 +18,26 @@ public partial class MapViewModel : ObservableObject
     [ObservableProperty] private Area _terminalArea;
 
     [ObservableProperty] private List<Terminal>? _terminals;
+    [ObservableProperty] private ControlVisibleModel _visible;
+    [ObservableProperty] private AnimationModel _animation;
+
 
     private readonly IMainApiClient _client;
     private readonly ImageLoadingHttpClient _imageClient;
 
     private readonly int _terminalId;
+    [ObservableProperty] private bool _showNavigation;
+    [ObservableProperty] private bool _isControlClose;
 
-    public MapViewModel(ImageLoadingHttpClient imageClient, IMainApiClient client)
+    public MapViewModel(
+        ImageLoadingHttpClient imageClient, 
+        IMainApiClient client)
     {
         _imageClient = imageClient;
         _client = client;
+        _visible = new ControlVisibleModel();
+        _animation = new AnimationModel();
+
         Initialize();
     }
 
@@ -39,7 +49,8 @@ public partial class MapViewModel : ObservableObject
     private async Task LoadData()
     {
         MapObjects = [];
-
+        Animation.StateAnimation = AnimationState.None;
+        Visible.SwitchControlVisible(ControlVisible.None);
         Floors = await _client.GetFloors();
         Areas = await _client.GetAreas();
         MapObjects = await _client.GetMapObjects();
@@ -53,17 +64,22 @@ public partial class MapViewModel : ObservableObject
         }
 
         SelectedFloor = Floors.FirstOrDefault()!;
-        SelectObject = MapObjects[0];
     }
 
     [RelayCommand]
-    public void SelectMapObject()
+    private void SelectMapObject()
     {
 
     }
 
-    [RelayCommand]
-    private void Loaded()
+    public async void SwitchAnimation()
     {
+        Animation.SwitchState(AnimationState.Start);
+
+        await Task.Delay(1500);
+
+        Visible.SwitchControlVisible(ControlVisible.None);
+        Animation.SwitchState(AnimationState.Start);
+        Animation.SwitchState(AnimationState.None);
     }
 }

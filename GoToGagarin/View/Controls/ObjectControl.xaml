@@ -5,30 +5,62 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:GoToGagarin.View.Controls"
+             xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:ObjectInfoControl}">
+             d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
     <Grid Width="1080" Height="1920" Background="Transparent"
             x:Name="MainCanvas">
-        <Border Width="1080"
-                VerticalAlignment="Bottom"
-                x:Name="MainBorder"
-                Height="298"
-                CornerRadius="32 32 0 0"
-                Background="{StaticResource BackgroundControl}">
-            <Grid>
-                <Button Template="{StaticResource GrabButtonTemplate}"
-                    Width="248" Height="6" Margin="0 8 0 0"
-                    VerticalAlignment="Top">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="MouseDown">
-                            <b:InvokeCommandAction
+        <StackPanel VerticalAlignment="Bottom">
+            <Button Command="{Binding OpenContentSliderCommand}" Width="232" Height="232"
+                    VerticalAlignment="Bottom"
+                    Visibility="Visible"
+                    Name="ContentSlider"
+                    Margin="0 0 0 32"/>
+            <Border Width="1080"
+                    VerticalAlignment="Bottom"
+                    x:Name="MainBorder"
+                    CornerRadius="32 32 0 0"
+                    Height="298"
+                    Background="{StaticResource BackgroundControl}">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MapVM.Animation.StateAnimation}"
+                                         Value="Start">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="StartAnimation">
+                                        <BeginStoryboard.Storyboard>
+                                            <Storyboard TargetProperty="Height">
+                                                <DoubleAnimation To="0"
+                                                                 Duration="0:0:0.5"
+                                                                 BeginTime="0:0:0.5"/>
+                                            </Storyboard>
+                                        </BeginStoryboard.Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MapVM.Animation.StateAnimation}"
+                                         Value="Stop">
+                                <Setter Property="Height" Value="298"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <Button Template="{StaticResource GrabButtonTemplate}"
+                        Width="248" Height="6" Margin="0 8 0 0"
+                        VerticalAlignment="Top">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="MouseDown">
+                                <b:InvokeCommandAction
                             Command="{Binding IsDraggingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                             PassEventArgsToCommand="True" />
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                </Button>
-                <local:ObjectInfoControl Margin="0 32 0 0" Width="952" DataContext="{Binding }" />
-            </Grid>
-        </Border>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                    <local:ObjectInfoControl Margin="0 32 0 0" Width="952" DataContext="{Binding }" />
+                </Grid>
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>

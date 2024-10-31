@@ -7,10 +7,20 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="ContentPresenterButtonTemplate" TargetType="Button">
-        <Border Background="{StaticResource BackgroundCloseButton}"
-                CornerRadius="16" Padding="8">
+        <Border Background="{TemplateBinding Background}"
+                CornerRadius="16" Padding="{TemplateBinding Padding}">
             <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"
                               ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </Border>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+        <Border Background="{TemplateBinding Background}"
+                CornerRadius="16" Padding="8">
+            <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                       FontSize="{TemplateBinding FontSize}"
+                       Foreground="{TemplateBinding Foreground}"
+                       Text="{TemplateBinding Content}"/>
         </Border>
     </ControlTemplate>
 

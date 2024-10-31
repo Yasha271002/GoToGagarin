@@ -8,6 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Refit;
 using System.Windows;
+using GoToGagarin.ViewModel.Popup;
+using MvvmNavigationLib.Services.ServiceCollectionExtensions;
+using MvvmNavigationLib.Stores;
+using CommunityToolkit.Mvvm.Messaging;
+using MvvmNavigationLib.Services;
 
 namespace GoToGagarin
 {
@@ -26,6 +31,8 @@ namespace GoToGagarin
                     {
                         ContentSerializer = new NewtonsoftJsonContentSerializer()
                     };
+                    services.AddUtilityNavigationServices<ModalNavigationStore>();
+                    services.AddSingleton<IMessenger>(_ => new WeakReferenceMessenger());
                     services.AddHttpClient<ImageLoadingHttpClient>(c => c.BaseAddress = new Uri(host ?? string.Empty));
                     services.AddRefitClient<IMainApiClient>(settings: refitSettings)
                         .ConfigureHttpClient(c => c.BaseAddress = new Uri(host ?? string.Empty));
@@ -33,18 +40,18 @@ namespace GoToGagarin
                     var inactivityTime = context.Configuration.GetValue<int>("inactivityTime");
                     services.AddSingleton<InactivityHelper>(_ => new InactivityHelper(inactivityTime));
 
-                    //var terminalId = context.Configuration.GetValue<int>("terminalId");
-                    //services.AddSingleton<MapViewModel>(s =>
-                    //    new MapViewModel(
-                    //        s.GetRequiredService<IMainApiClient>(),
-                    //        s.GetRequiredService<ImageLoadingHttpClient>(),
-                    //        terminalId));
+                    services.AddSingleton<ModalNavigationStore>();
 
                     services.AddSingleton<MapViewModel>();
-                    services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<SearchViewModel>();
+                    services.AddSingleton<ButtonsControlViewModel>();
+                    services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<NavigationViewModel>();
                     services.AddSingleton<MainWindowViewModel>();
+
+                    services.AddParameterNavigationService<ContentSliderPopupViewModel, ModalNavigationStore, MapViewModel>(
+                        s => param => new ContentSliderPopupViewModel(param, s.GetRequiredService<CloseNavigationService<ModalNavigationStore>>()));
+
                     services.AddSingleton<MainWindow>(
                         s => new MainWindow
                         {

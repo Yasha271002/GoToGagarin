@@ -3,6 +3,7 @@
     <Color x:Key="BackgroundControlColor">#F1DCBA</Color>
     <Color x:Key="BackgroundGrabButtonColor">#677686</Color>
     <Color x:Key="BackgroundCloseButtonColor">#3F92B2</Color>
+    <Color x:Key="BackgroundButtonColor">#23394E</Color>
 
     <Color x:Key="ObjectNameForegroundColor">#CA2534</Color>
     <Color x:Key="DescriptionForegroundColor">#46576A</Color>
@@ -12,6 +13,7 @@
     <SolidColorBrush Color="{StaticResource BackgroundControlColor}" x:Key="BackgroundControl" />
     <SolidColorBrush Color="{StaticResource BackgroundGrabButtonColor}" x:Key="BackgroundGrabButton" />
     <SolidColorBrush Color="{StaticResource BackgroundCloseButtonColor}" x:Key="BackgroundCloseButton" />
+    <SolidColorBrush Color="{StaticResource BackgroundButtonColor}" x:Key="BackgroundButton" />
 
     <SolidColorBrush Color="{StaticResource ObjectNameForegroundColor}" x:Key="ObjectNameForeground" />
     <SolidColorBrush Color="{StaticResource DescriptionForegroundColor}" x:Key="DescriptionForeGround" />

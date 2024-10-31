@@ -7,24 +7,21 @@
         xmlns:controls="clr-namespace:GoToGagarin.View.Controls"
         xmlns:window="clr-namespace:GoToGagarin.ViewModel.Window"
         xmlns:mapControlLib="clr-namespace:MapControlLib;assembly=MapControlLib"
+        xmlns:components="clr-namespace:MainComponents.Components;assembly=MainComponents"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
         d:DataContext="{d:DesignInstance window:MainWindowViewModel}"
         Title="MainWindow">
-    <b:Interaction.Triggers>
-        <b:EventTrigger EventName="Loaded">
-            <b:InvokeCommandAction
-                Command="{Binding LoadedCommand}" />
-        </b:EventTrigger>
-    </b:Interaction.Triggers>
     <Viewbox>
         <Grid Width="1080" Height="1920">
-           
-            <controls:ObjectControl DataContext="{Binding InfoViewModel}" Visibility="Visible" />
-            <controls:SearchControl VerticalAlignment="Bottom" DataContext="{Binding SearchViewModel}" Visibility="Hidden" />
-            <controls:NavigationControl Height="420" VerticalAlignment="Bottom"
-                                        DataContext="{Binding NavigationViewModel}" Visibility="Hidden" />
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="Loaded">
+                    <b:InvokeCommandAction
+                        Command="{Binding LoadedCommand}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+
             <mapControlLib:Map
                 x:Name="Map"
                 ZoomMin="1"
@@ -35,12 +32,74 @@
                 Areas="{Binding Areas}"
                 MapObjects="{Binding MapObjects}"
                 TerminalArea="{Binding TerminalArea}"
+                SelectedFloor="{Binding SelectedFloor}"
                 StrokeThickness="20"
                 StrokeDashArray="10 10"
                 ArrowLength="50"
                 EndWithArrow="True"
                 StrokeDashCap="Round"
                 OnMapObjectSelectedCommand="{Binding SelectMapObjectCommand}"/>
+            <controls:ButtonsControl  Height="200" Width="56" DataContext="{Binding ButtonsControlViewModel }"
+                                      HorizontalAlignment="Right" Margin="0 0 64 0">
+                <controls:ButtonsControl.Style>
+                    <Style TargetType="controls:ButtonsControl">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible}"
+                                         Value="IsSearch">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:ButtonsControl.Style>
+            </controls:ButtonsControl>
+            <controls:ObjectControl DataContext="{Binding InfoViewModel}">
+                <controls:ObjectControl.Style>
+                    <Style TargetType="controls:ObjectControl">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger
+                                Binding="{Binding MapVM.Visible.ControlVisible}"
+                                Value="IsInfo">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:ObjectControl.Style>
+            </controls:ObjectControl>
+            <controls:SearchControl 
+                VerticalAlignment="Bottom"
+                DataContext="{Binding SearchViewModel}">
+                <controls:SearchControl.Style>
+                    <Style TargetType="controls:SearchControl">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible}" 
+                                         Value="IsSearch">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:SearchControl.Style>
+            </controls:SearchControl>
+            <controls:NavigationControl VerticalAlignment="Bottom"
+                                        DataContext="{Binding NavigationViewModel}">
+                <controls:NavigationControl.Style>
+                    <Style TargetType="controls:NavigationControl">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible, UpdateSourceTrigger=PropertyChanged}"
+                                         Value="IsNavigate">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:NavigationControl.Style>
+            </controls:NavigationControl>
+
+            <components:ModalControl IsOpen="{Binding IsModalOpen}"
+                                     Content="{Binding CurrentModalViewModel}" />
+
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
