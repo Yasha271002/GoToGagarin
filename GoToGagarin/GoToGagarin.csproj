@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Helpers\Animation\" />
     <Folder Include="ViewModel\Popup\PopupContainers\" />
     <Folder Include="ViewModel\Window\" />
   </ItemGroup>

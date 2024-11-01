@@ -17,33 +17,6 @@ namespace GoToGagarin.View.Controls
             InitializeComponent();
         }
 
-        [RelayCommand]
-        private async void IsDragging(MouseButtonEventArgs f)
-        {
-            if (f is not MouseButtonEventArgs e)
-                return;
-
-            MainBorder.ApplyAnimationClock(Border.HeightProperty, null);
-
-            while (e.ButtonState == MouseButtonState.Pressed)
-            {
-                var newPos = e.GetPosition(MainCanvas);
-
-                var height = 1920;
-                var newHeight = height - newPos.Y;
-
-                newHeight = newHeight switch
-                {
-                    > 1870 => 1856,
-                    < 278 => 298,
-                    _ => newHeight
-                };
-
-                ContentSlider.Visibility = newHeight > 1600 ? Visibility.Hidden : Visibility.Visible;
-                MainBorder.Height = newHeight;
-
-                await Task.Delay(10);
-            }
-        }
+       
     }
 }

@@ -19,7 +19,6 @@ public partial class MapViewModel : ObservableObject
 
     [ObservableProperty] private List<Terminal>? _terminals;
     [ObservableProperty] private ControlVisibleModel _visible;
-    [ObservableProperty] private AnimationModel _animation;
 
 
     private readonly IMainApiClient _client;
@@ -36,7 +35,6 @@ public partial class MapViewModel : ObservableObject
         _imageClient = imageClient;
         _client = client;
         _visible = new ControlVisibleModel();
-        _animation = new AnimationModel();
 
         Initialize();
     }
@@ -49,18 +47,21 @@ public partial class MapViewModel : ObservableObject
     private async Task LoadData()
     {
         MapObjects = [];
-        Animation.StateAnimation = AnimationState.None;
         Visible.SwitchControlVisible(ControlVisible.None);
         Floors = await _client.GetFloors();
+        foreach (var floor in Floors)
+        {
+            floor.ImagePath = await _imageClient.DownloadImage(floor.Image);
+        }
         Areas = await _client.GetAreas();
         MapObjects = await _client.GetMapObjects();
 
         Terminals = await _client.GetTerminals();
         TerminalArea = Areas.FirstOrDefault()!;
 
-        foreach (var imagesModel in MapObjects.SelectMany(mapObjectsModel => mapObjectsModel.Images))
+        foreach (var imagesModel in MapObjects.SelectMany(mapObjectsModel => mapObjectsModel.Images!))
         {
-            imagesModel.Image = await _imageClient.DownloadImage(imagesModel.Image);
+            imagesModel.Image = await _imageClient.DownloadImage(imagesModel.Image!);
         }
 
         SelectedFloor = Floors.FirstOrDefault()!;
@@ -70,16 +71,5 @@ public partial class MapViewModel : ObservableObject
     private void SelectMapObject()
     {
 
-    }
-
-    public async void SwitchAnimation()
-    {
-        Animation.SwitchState(AnimationState.Start);
-
-        await Task.Delay(1500);
-
-        Visible.SwitchControlVisible(ControlVisible.None);
-        Animation.SwitchState(AnimationState.Start);
-        Animation.SwitchState(AnimationState.None);
     }
 }

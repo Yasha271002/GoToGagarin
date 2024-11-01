@@ -8,44 +8,17 @@
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-    <Grid Width="1080" Height="1920" Background="Transparent"
-            x:Name="MainCanvas">
+    <Grid Width="1080" Height="1920" Background="Transparent">
         <StackPanel VerticalAlignment="Bottom">
             <Button Command="{Binding OpenContentSliderCommand}" Width="232" Height="232"
                     VerticalAlignment="Bottom"
                     Visibility="Visible"
-                    Name="ContentSlider"
                     Margin="0 0 0 32"/>
             <Border Width="1080"
                     VerticalAlignment="Bottom"
-                    x:Name="MainBorder"
                     CornerRadius="32 32 0 0"
-                    Height="298"
+                    Height="{Binding HeightBorder}"
                     Background="{StaticResource BackgroundControl}">
-                <Border.Style>
-                    <Style TargetType="Border">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding MapVM.Animation.StateAnimation}"
-                                         Value="Start">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard Name="StartAnimation">
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Height">
-                                                <DoubleAnimation To="0"
-                                                                 Duration="0:0:0.5"
-                                                                 BeginTime="0:0:0.5"/>
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding MapVM.Animation.StateAnimation}"
-                                         Value="Stop">
-                                <Setter Property="Height" Value="298"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
                 <Grid>
                     <Button Template="{StaticResource GrabButtonTemplate}"
                         Width="248" Height="6" Margin="0 8 0 0"
@@ -53,7 +26,7 @@
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="MouseDown">
                                 <b:InvokeCommandAction
-                            Command="{Binding IsDraggingCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                            Command="{Binding IsDraggingCommand}"
                             PassEventArgsToCommand="True" />
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
