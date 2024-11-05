@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using GoToGagarin.Model;
 using System.Collections.ObjectModel;
+using MapControlLib;
 
 namespace GoToGagarin.ViewModel.Controls;
 
@@ -23,6 +24,7 @@ public partial class SearchViewModel : ObservableObject
         MapViewModel.SelectObject = model;
         MapViewModel.Visible.SwitchControlVisible(ControlVisible.IsInfo);
         SearchObjectName = "";
+        OnPropertyChanged(nameof(MapViewModel.SelectObject));
     }
 
     [RelayCommand]

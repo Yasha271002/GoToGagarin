@@ -24,11 +24,6 @@ public partial class MainWindowViewModel : ObservableObject,
     [ObservableProperty] private SearchViewModel _searchViewModel;
     [ObservableProperty] private MapViewModel _mapViewModel;
 
-    
-    
-
-
-
     private readonly ModalNavigationStore _modalNavigationStore;
 
     public ObservableObject? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;

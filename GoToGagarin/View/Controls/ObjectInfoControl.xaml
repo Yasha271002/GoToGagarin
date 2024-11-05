@@ -20,7 +20,7 @@
             <TextBlock Text="{Binding MapVM.SelectObject.Title}"
                        Style="{StaticResource ObjectNameTextStyle}"
                        FontWeight="Bold" Margin="24 0" HorizontalAlignment="Center"
-                       TextAlignment="Center"  Width="700" VerticalAlignment="Center"
+                       TextAlignment="Center" Width="700" VerticalAlignment="Center"
                        FontSize="40" Foreground="{StaticResource ObjectNameForeground}" />
             <Button Template="{StaticResource ContentPresenterButtonTemplate}"
                     ContentTemplate="{DynamicResource CloseIcon}"
@@ -37,20 +37,20 @@
                             Background="{StaticResource DescriptionBackground}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                   FontSize="34" FontWeight="Bold" Text="{Binding MapVM.SelectObject.Title}"
-                                   Foreground="{StaticResource ObjectNameForeground}"  Margin="0 0 0 24" />
+                                       FontSize="34" FontWeight="Bold" Text="{Binding MapVM.SelectObject.Title}"
+                                       Foreground="{StaticResource ObjectNameForeground}" Margin="0 0 0 24" />
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                   FontSize="20" FontWeight="Normal" Text="{Binding MapVM.SelectObject.Description}"
-                                   Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Justify" />
+                                       FontSize="20" FontWeight="Normal"
+                                       Text="{Binding MapVM.SelectObject.Description}"
+                                       Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Justify" />
                         </StackPanel>
                     </Border>
                 </Grid>
             </TabItem>
             <TabItem Header="Фото">
                 <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <ItemsControl 
+                    <ItemsControl
                         ItemsSource="{Binding MapVM.SelectObject.Images}">
-                        
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Margin="0 32 0 0 " />
@@ -58,48 +58,58 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="472" Height="466" Margin="2"
-                                        CornerRadius="16">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
-                                    </Border.Background>
-                                    <Grid>
-                                        <Border CornerRadius="16 " Height="466">
-                                            <Border.Background>
-                                                <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill" />
-                                            </Border.Background>
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Opacity" Value="0" />
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <Trigger Property="Opacity" Value="0">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </Trigger>
-                                                        <EventTrigger RoutedEvent="Loaded">
-                                                            <BeginStoryboard>
-                                                                <Storyboard TargetProperty="Opacity">
-                                                                    <DoubleAnimation To="1"
-                                                                    Duration="0:0:0.5"
-                                                                    BeginTime="0:0:0.5" />
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                        </Border>
-                                        <Border CornerRadius="0 0 16 16" Height="60" VerticalAlignment="Bottom">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
-                                            </Border.Background>
-                                            <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                                   Text="{Binding Title}"
-                                                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                   FontSize="16" FontWeight="Medium" Foreground="White" />
-                                        </Border>
-                                    </Grid>
-                                </Border>
+                                <Button Command="{Binding DataContext.OpenContentSliderCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        Width="472" Height="466">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Border  Margin="2"
+                                                    CornerRadius="16">
+                                                <Border.Background>
+                                                    <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
+                                                </Border.Background>
+                                                <Grid>
+                                                    <Border CornerRadius="16 " Height="466">
+                                                        <Border.Background>
+                                                            <ImageBrush ImageSource="{Binding Image}"
+                                                                        Stretch="UniformToFill" />
+                                                        </Border.Background>
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Opacity" Value="0" />
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="Opacity" Value="0">
+                                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                                    </Trigger>
+                                                                    <EventTrigger RoutedEvent="Loaded">
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard TargetProperty="Opacity">
+                                                                                <DoubleAnimation To="1"
+                                                                                    Duration="0:0:0.5"
+                                                                                    BeginTime="0:0:0.5" />
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </EventTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                    </Border>
+                                                    <Border CornerRadius="0 0 16 16" Height="60"
+                                                            VerticalAlignment="Bottom">
+                                                        <Border.Background>
+                                                            <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
+                                                        </Border.Background>
+                                                        <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                                                                   Text="{Binding Title}"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="16" FontWeight="Medium" Foreground="White" />
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -109,6 +119,6 @@
         <Button Grid.Row="2" Margin="64 32 64 32"
                 VerticalAlignment="Bottom"
                 Template="{StaticResource BuildRoute}"
-                Command="{Binding NavigateCommand}"/>
+                Command="{Binding NavigateCommand}" />
     </Grid>
 </UserControl>

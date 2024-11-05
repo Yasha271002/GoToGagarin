@@ -5,7 +5,6 @@ using GoToGagarin.ViewModel.Popup;
 using MvvmNavigationLib.Services;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows;
 using GoToGagarin.Helpers.Animation;
 
 namespace GoToGagarin.ViewModel.Controls;
@@ -18,6 +17,7 @@ public partial class ObjectInfoViewModel : ObservableObject
     [ObservableProperty] private Grid _mainGrid;
     [ObservableProperty] private double _heightBorder;
     private readonly AnimationHelper _animationHelper;
+    [ObservableProperty] private bool _showPhotoList;
 
     public ObjectInfoViewModel(MapViewModel mapViewModel,
         ParameterNavigationService<ContentSliderPopupViewModel, MapViewModel> parameterNavigationService)
@@ -26,6 +26,7 @@ public partial class ObjectInfoViewModel : ObservableObject
         _parameterNavigationService = parameterNavigationService;
         _animationHelper = new AnimationHelper();
         HeightBorder = 298;
+        ShowPhotoList = true;
     }
 
     [RelayCommand]
@@ -43,6 +44,7 @@ public partial class ObjectInfoViewModel : ObservableObject
             await Task.Delay(10);
         }
 
+        ShowPhotoList = true;
         await Task.Delay(100);
         MapVM.Visible.SwitchControlVisible(ControlVisible.None);
     }
@@ -52,6 +54,7 @@ public partial class ObjectInfoViewModel : ObservableObject
     {
         MapVM.Visible.SwitchControlVisible(ControlVisible.IsNavigate);
         HeightBorder = 298;
+        ShowPhotoList = true;
     }
 
     [RelayCommand]
@@ -74,6 +77,8 @@ public partial class ObjectInfoViewModel : ObservableObject
                 < 278 => 298,
                 _ => newHeight
             };
+
+            ShowPhotoList = !(newHeight > 1500);
 
             HeightBorder = newHeight;
 

@@ -10,10 +10,66 @@
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
     <Grid Width="1080" Height="1920" Background="Transparent">
         <StackPanel VerticalAlignment="Bottom">
-            <Button Command="{Binding OpenContentSliderCommand}" Width="232" Height="232"
-                    VerticalAlignment="Bottom"
-                    Visibility="Visible"
-                    Margin="0 0 0 32"/>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                          PanningMode="HorizontalOnly"
+                          Width="1080"
+                          Visibility="{Binding ShowPhotoList,
+                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Margin="0 0 0 32"
+                          HorizontalScrollBarVisibility="Hidden">
+                <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Images}"
+                              VerticalAlignment="Bottom"
+                              HorizontalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Command="{Binding DataContext.OpenContentSliderCommand
+                            ,RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Border Width="232" Height="232" CornerRadius="16" Margin="4 0">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
+                                            </Border.Background>
+                                            <Border CornerRadius="16">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Opacity" Value="0" />
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="Opacity" Value="0">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </Trigger>
+                                                            <EventTrigger RoutedEvent="Loaded">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard TargetProperty="Opacity">
+                                                                        <DoubleAnimation To="1"
+                                                                            Duration="0:0:0.5"
+                                                                            BeginTime="0:0:0.5" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Border.Background>
+                                                    <ImageBrush
+                                                        ImageSource="{Binding Image}" />
+                                                </Border.Background>
+                                            </Border>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
             <Border Width="1080"
                     VerticalAlignment="Bottom"
                     CornerRadius="32 32 0 0"
@@ -21,13 +77,13 @@
                     Background="{StaticResource BackgroundControl}">
                 <Grid>
                     <Button Template="{StaticResource GrabButtonTemplate}"
-                        Width="248" Height="6" Margin="0 8 0 0"
-                        VerticalAlignment="Top">
+                            Width="248" Height="6" Margin="0 8 0 0"
+                            VerticalAlignment="Top">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="MouseDown">
                                 <b:InvokeCommandAction
-                            Command="{Binding IsDraggingCommand}"
-                            PassEventArgsToCommand="True" />
+                                    Command="{Binding IsDraggingCommand}"
+                                    PassEventArgsToCommand="True" />
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </Button>
