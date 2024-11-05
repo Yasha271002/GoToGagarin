@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GoToGagarin.Helpers;
+using GoToGagarin.Model;
 using GoToGagarin.ViewModel.Controls;
 using MainComponents.Popups;
 using MvvmNavigationLib.Stores;
@@ -22,7 +23,11 @@ public partial class MainWindowViewModel : ObservableObject,
     [ObservableProperty] private NavigationViewModel _navigationViewModel;
     [ObservableProperty] private SearchViewModel _searchViewModel;
     [ObservableProperty] private MapViewModel _mapViewModel;
-    [ObservableProperty] private ButtonsControlViewModel _buttonsControlViewModel;
+
+    
+    
+
+
 
     private readonly ModalNavigationStore _modalNavigationStore;
 
@@ -33,17 +38,17 @@ public partial class MainWindowViewModel : ObservableObject,
         IMessenger messenger,
         ObjectInfoViewModel infoViewModel,
         NavigationViewModel navigationViewModel,
-        SearchViewModel searchViewModel, 
-        ButtonsControlViewModel buttonsControlViewModel,
-        ModalNavigationStore modalNavigationStore)
+        SearchViewModel searchViewModel,
+        ModalNavigationStore modalNavigationStore,
+        MapViewModel mapViewModel)
     {
         messenger.RegisterAll(this);
         _inactivityHelper = inactivityHelper;
         _infoViewModel = infoViewModel;
         _navigationViewModel = navigationViewModel;
         _searchViewModel = searchViewModel;
-        _buttonsControlViewModel = buttonsControlViewModel;
         _modalNavigationStore = modalNavigationStore;
+        _mapViewModel = mapViewModel;
         _inactivityHelper.OnInactivity += _inactivityHelper_OnInactivity;
     }
 
@@ -61,9 +66,17 @@ public partial class MainWindowViewModel : ObservableObject,
     }
 
     [RelayCommand]
-    private void Loaded()
+    private void SearchButton()
+    {
+        MapViewModel.Visible.ControlVisible = ControlVisible.IsSearch;
+        OnPropertyChanged(nameof(MapViewModel.Visible));
+    }
+
+    [RelayCommand]
+    private async Task Loaded()
     {
         ExplorerHelper.KillExplorer();
+        await MapViewModel.LoadData();
     }
 
     [RelayCommand]

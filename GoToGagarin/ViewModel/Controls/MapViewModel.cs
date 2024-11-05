@@ -27,6 +27,15 @@ public partial class MapViewModel : ObservableObject
     private readonly int _terminalId;
     [ObservableProperty] private bool _showNavigation;
     [ObservableProperty] private bool _isControlClose;
+    [ObservableProperty] private double _zoomMin;
+    [ObservableProperty] private double _zoomMax;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsEnabledMinus))]
+    [NotifyPropertyChangedFor(nameof(IsEnabledPlus))]
+    private double _currentZoom;
+
+    public bool IsEnabledMinus => CurrentZoom > ZoomMin;
+    public bool IsEnabledPlus => CurrentZoom < ZoomMax;
 
     public MapViewModel(
         ImageLoadingHttpClient imageClient, 
@@ -35,16 +44,11 @@ public partial class MapViewModel : ObservableObject
         _imageClient = imageClient;
         _client = client;
         _visible = new ControlVisibleModel();
-
-        Initialize();
+        ZoomMin = 1.0;
+        ZoomMax = 10.0;
     }
 
-    private async void Initialize()
-    {
-        await LoadData();
-    }
-
-    private async Task LoadData()
+    public async Task LoadData()
     {
         MapObjects = [];
         Visible.SwitchControlVisible(ControlVisible.None);

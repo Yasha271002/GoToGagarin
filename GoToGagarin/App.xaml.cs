@@ -44,7 +44,6 @@ namespace GoToGagarin
 
                     services.AddSingleton<MapViewModel>();
                     services.AddSingleton<SearchViewModel>();
-                    services.AddSingleton<ButtonsControlViewModel>();
                     services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<NavigationViewModel>();
                     services.AddSingleton<MainWindowViewModel>();

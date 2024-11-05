@@ -23,15 +23,16 @@
             </b:Interaction.Triggers>
             <mapControlLib:Map
                 x:Name="Map"
-                ZoomMin="1"
+                ZoomMin="{Binding ZoomMin}"
                 StartZoom="3"
-                ZoomMax="10"
+                CurrentZoom="{Binding CurrentZoom, Mode=OneWayToSource}"
+                ZoomMax="{Binding ZoomMax}"
                 DataContext="{Binding MapViewModel}"
                 Floors="{Binding Floors}"
                 Areas="{Binding Areas}"
                 MapObjects="{Binding MapObjects}"
                 TerminalArea="{Binding TerminalArea}"
-                SelectedFloor="{Binding SelectedFloor}"
+                SelectedFloor="{Binding SelectedFloor, Mode=TwoWay}"
                 StrokeThickness="20"
                 StrokeDashArray="10 10"
                 ArrowLength="50"
@@ -39,10 +40,10 @@
                 StrokeDashCap="Round"
                 OnMapObjectSelectedCommand="{Binding SelectMapObjectCommand}" />
 
-            <controls:ButtonsControl Height="200" Width="56" DataContext="{Binding ButtonsControlViewModel }"
-                                     HorizontalAlignment="Right" Margin="0 0 64 0">
-                <controls:ButtonsControl.Style>
-                    <Style TargetType="controls:ButtonsControl">
+            <StackPanel Width="56" Height="200" HorizontalAlignment="Right"
+                        Margin="0 0 64 0 ">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible}"
@@ -51,8 +52,68 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </controls:ButtonsControl.Style>
-            </controls:ButtonsControl>
+                </StackPanel.Style>
+                <Button Template="{StaticResource ContentPresenterButtonTemplate}"
+                        ContentTemplate="{StaticResource PlusIcon}"
+                        Padding="8"
+                        IsEnabled="{Binding MapViewModel.IsEnabledPlus}"
+                        VerticalAlignment="Top">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#233A4F" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MapViewModel.IsEnabledPlus}" Value="False">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="LightGray" Opacity="0.5" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Click">
+                            <b:CallMethodAction TargetObject="{Binding ElementName=Map}"
+                                                MethodName="ZoomIn" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Button>
+                <Button Template="{StaticResource ContentPresenterButtonTemplate}"
+                        ContentTemplate="{StaticResource MinusIcon}"
+                        Padding="8"
+                        IsEnabled="{Binding MapViewModel.IsEnabledMinus}"
+                        VerticalAlignment="Center"
+                        Margin="0 16">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#233A4F" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MapViewModel.IsEnabledMinus}" Value="False">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="LightGray" Opacity="0.5" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Click">
+                            <b:CallMethodAction TargetObject="{Binding ElementName=Map}"
+                                                MethodName="ZoomOut" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Button>
+                <Button Template="{StaticResource ContentPresenterButtonTemplate}"
+                        VerticalAlignment="Bottom"
+                        ContentTemplate="{StaticResource SearchForegroundIcon}"
+                        Background="{StaticResource BackgroundCloseButton}"
+                        Foreground="White"
+                        Padding="12"
+                        Command="{Binding SearchButtonCommand}" />
+            </StackPanel>
             <controls:ObjectControl DataContext="{Binding InfoViewModel}">
                 <controls:ObjectControl.Style>
                     <Style TargetType="controls:ObjectControl">
@@ -97,10 +158,8 @@
                     </Style>
                 </controls:NavigationControl.Style>
             </controls:NavigationControl>
-
             <components:ModalControl IsOpen="{Binding IsModalOpen}"
                                      Content="{Binding CurrentModalViewModel}" />
-
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
