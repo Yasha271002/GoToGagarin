@@ -58,7 +58,6 @@ public partial class MainWindowViewModel : ObservableObject,
     {
         _sec++;
         if (_sec < 7) return;
-        ExplorerHelper.RunExplorer();
         Application.Current.Shutdown();
     }
 
@@ -71,12 +70,15 @@ public partial class MainWindowViewModel : ObservableObject,
     }
 
     [RelayCommand]
-    private async Task Loaded()
+    private void Loaded()
     {
         ExplorerHelper.KillExplorer();
         MapViewModel.ButtonVisible = true;
         //await MapViewModel.LoadData();
     }
+
+    [RelayCommand]
+    private void Closing()=>ExplorerHelper.RunExplorer();
 
     [RelayCommand]
     private void StopTimer()
