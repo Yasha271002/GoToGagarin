@@ -16,17 +16,19 @@ public partial class NavigationViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void BuildRoute()
+    private async void BuildRoute()
     {
         MapViewModel.StopBuild();
+        await Task.Delay(500); // animation
         MapViewModel.ShowNavigation = true;
         BuildRoute(RouteType!);
     }
 
     [RelayCommand]
-    private void SwitchType(object parameter)
+    private async void SwitchType(object parameter)
     {
         MapViewModel.StopBuild();
+        await Task.Delay(500); // animation
         RouteType = parameter.ToString();
         BuildRoute(RouteType!);
     }

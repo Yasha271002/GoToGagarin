@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using GoToGagarin.Model;
 using System.Collections.ObjectModel;
-using MapControlLib;
 
 namespace GoToGagarin.ViewModel.Controls;
 

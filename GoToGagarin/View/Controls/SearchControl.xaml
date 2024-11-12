@@ -34,6 +34,7 @@
                 </ItemsControl>
                 <TextBox Template="{StaticResource TextBoxTemplate}"
                          Width="952"
+                         x:Name="SearchTextBox"
                          Height="56"
                          VerticalAlignment="Bottom"
                          VerticalContentAlignment="Center"

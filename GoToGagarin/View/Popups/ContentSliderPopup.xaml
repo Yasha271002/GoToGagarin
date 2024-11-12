@@ -9,15 +9,25 @@
              xmlns:controls="clr-namespace:GoToGagarin.View.Controls"
              xmlns:controls1="clr-namespace:GoToGagarin.ViewModel.Controls"
              xmlns:model="clr-namespace:GoToGagarin.Model"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="1920"
              d:DesignWidth="1080"
              d:DataContext="{d:DesignInstance popup:ContentSliderPopupViewModel}">
     <popupContainers:OpacityPopupContainer>
-        <Border>
-            <Grid Margin="64">
+        <Border Background="Transparent">
+            <Grid Margin="64" Background="Transparent">
+                <Grid Width="1080" Height="1920" Background="Transparent">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseDown">
+                            <b:InvokeCommandAction
+                                Command="{Binding CloseContainerCommand}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Grid>
                 <controls:ContentSlider ItemsSource="{Binding Images}"
                                         ArrowsVisibility="Visible"
+                                        Width="952" Height="634"
                                         NextArrowStyle="{DynamicResource  NextArrowButton}"
                                         BackArrowStyle="{DynamicResource BackArrowButton}">
                     <controls:ContentSlider.ItemTemplate>

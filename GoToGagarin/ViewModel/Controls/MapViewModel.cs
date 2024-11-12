@@ -87,6 +87,8 @@ public partial class MapViewModel : ObservableObject
             imagesModel.Image = await _imageClient.DownloadImage(imagesModel.Image!);
         }
 
+
+
         SelectedFloor = Floors.FirstOrDefault()!;
     }
 

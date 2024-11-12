@@ -65,6 +65,7 @@ public partial class MainWindowViewModel : ObservableObject,
     [RelayCommand]
     private void SearchButton()
     {
+        MapViewModel.StopBuild();
         MapViewModel.Visible.ControlVisible = ControlVisible.IsSearch;
         OnPropertyChanged(nameof(MapViewModel.Visible));
     }

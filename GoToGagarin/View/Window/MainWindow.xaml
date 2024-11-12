@@ -11,6 +11,8 @@
         xmlns:helpers="clr-namespace:GoToGagarin.Helpers"
         xmlns:behaviours="clr-namespace:MapControlLib.Behaviours;assembly=MapControlLib"
         xmlns:models="clr-namespace:GoToGagarin.Model"
+        xmlns:controls1="clr-namespace:GoToGagarin.ViewModel.Controls"
+        xmlns:models1="clr-namespace:MapControlLib.Models;assembly=MapControlLib"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
@@ -21,7 +23,8 @@
         <helpers:MapObjectTemplateSelector x:Key="MapObjectTemplateSelector" />
         <DataTemplate x:Key="TerminalTemplate" DataType="{x:Type models:Terminal}">
             <ContentControl 
-                ContentTemplate="{StaticResource PeopleLocationIcon}">
+                ContentTemplate="{StaticResource TerminalIcon}"
+                Foreground="#CA2534">
                 <b:Interaction.Behaviors>
                     <behaviours:MapElementsScaleBehavior ScaleKoef="4"/>
                 </b:Interaction.Behaviors>
@@ -38,7 +41,10 @@
                         Command="{Binding LoadedCommand}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
+
             <mapControlLib:Map
+                Width="1080"
+                Height="1920"
                 x:Name="Map"
                 ZoomMin="{Binding ZoomMin}"
                 StartZoom="3"
@@ -52,7 +58,8 @@
                 SelectedFloor="{Binding SelectedFloor, Mode=TwoWay}"
                 StrokeThickness="25"
                 RouteColor="#E77972"
-                ArrowLength="50"
+                AnimationDuration="0:0:5"
+                ArrowLength="0"
                 EndWithArrow="True"
                 StrokeDashCap="Round"
                 AreaContentTemplateSelector="{StaticResource MapObjectTemplateSelector}"
@@ -64,7 +71,6 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </mapControlLib:Map>
-
 
             <controls:ObjectControl DataContext="{Binding InfoViewModel}">
                 <controls:ObjectControl.Style>
