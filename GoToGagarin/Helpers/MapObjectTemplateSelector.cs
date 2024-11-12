@@ -12,7 +12,7 @@ public class MapObjectTemplateSelector:DataTemplateSelector
         return item switch
         {
             Terminal => (DataTemplate)control.FindResource("TerminalTemplate"),
-            MapObjectsModel => (DataTemplate)control.FindResource("MapObjectTemplate"),
+            MapObject => (DataTemplate)control.FindResource("MapObjectTemplate"),
             _ => base.SelectTemplate(item, container)
         };
     }

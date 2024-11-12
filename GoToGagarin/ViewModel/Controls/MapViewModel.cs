@@ -10,8 +10,9 @@ namespace GoToGagarin.ViewModel.Controls;
 
 public partial class MapViewModel : ObservableObject
 {
-    [ObservableProperty] private List<MapObjectsModel> _mapObjects;
-    [ObservableProperty] private MapObjectsModel _selectObject;
+    [ObservableProperty] private List<MapObject> _mapObjects;
+    [ObservableProperty] private List<INavigateableModel> _allMapObjects;
+    [ObservableProperty] private MapObject _selectObject;
 
     [ObservableProperty] private List<Floor> _floors;
     [ObservableProperty] private Floor _selectedFloor;
@@ -52,7 +53,7 @@ public partial class MapViewModel : ObservableObject
         _client = client;
         _terminalId = terminalId;
         _visible = new ControlVisibleModel();
-        ZoomMin = 1.0;
+        ZoomMin = 2.0;
         ZoomMax = 10.0;
     }
 
@@ -71,18 +72,13 @@ public partial class MapViewModel : ObservableObject
         Visible.SwitchControlVisible(ControlVisible.None);
         
         Areas = await _client.GetAreas();
-        MapObjects = await _client.GetMapObjects();
-
-        foreach (var mapObject in MapObjects)
-        {
-            mapObject.Description = FiltredText(mapObject.Description!);
-        }
-
+        var mapObjectsModels = await _client.GetMapObjects();
+        MapObjects = mapObjectsModels.ToMapObjects();
         Terminals = await _client.GetTerminals();
         Terminal = Terminals[_terminalId];
         TerminalArea = Areas.FirstOrDefault(f=>f.Id == Terminal.Area);
-
-        foreach (var imagesModel in MapObjects.SelectMany(mapObjectsModel => mapObjectsModel.Images!))
+        AllMapObjects = [..MapObjects, Terminal];
+        foreach (var imagesModel in MapObjects.SelectMany(mapObjectsModel => mapObjectsModel.Images))
         {
             imagesModel.Image = await _imageClient.DownloadImage(imagesModel.Image!);
         }
@@ -93,22 +89,17 @@ public partial class MapViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SelectMapObject(MapObjectsModel f)
+    private void SelectMapObject(MapObject f)
     {
-        if (f is not MapObjectsModel mapObject)
-            return;
-        SelectObject = mapObject;
+        SelectObject = f;
         Visible.SwitchControlVisible(ControlVisible.IsInfo);
     }
 
-    private string FiltredText(string text)
-    {
-        return text == null ? string.Empty : Regex.Replace(text, @"[^а-яА-Я0-9\s.,:!?'\-]", "");
-    }
+   
 
-    public async Task BuildRoute(MapObjectsModel SelectedMapObject, int routeType)
+    public async Task BuildRoute(MapObject SelectedMapObject, int routeType)
     {
-        if (Terminal?.Node is null || SelectedMapObject?.Node is null) return;
+        if (Terminal?.Node is null || SelectedMapObject.Node is null) return;
         var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
         this.Map.Navigate(points);
     }

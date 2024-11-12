@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GoToGagarin.Model;
 using GoToGagarin.ViewModel.Popup;
@@ -36,6 +38,9 @@ public partial class ObjectInfoViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void Loaded(Grid mainGrid) => MainGrid = mainGrid;
+
+    [RelayCommand]
     private async void Close()
     {
         for (var i = HeightBorder; HeightBorder > 298; i -= 20)
@@ -64,26 +69,21 @@ public partial class ObjectInfoViewModel : ObservableObject
     {
         if (f is not MouseButtonEventArgs e)
             return;
-
-
+        
         while (e.ButtonState == MouseButtonState.Pressed)
         {
-            var newPos = e.GetPosition(MainGrid);
-
-            var height = 1920;
-            var newHeight = (height) - newPos.Y * 1.8;
-
-            newHeight = newHeight switch
+            var newPos = 1920-e.GetPosition(MainGrid).Y;
+            newPos = newPos switch
             {
-                > 1870 => 1856,
+                > 1500 => 1500,
                 < 278 => 298,
-                _ => newHeight
+                _ => newPos
             };
 
-            ShowPhotoList = !(newHeight > 1500);
-            MapVM.ButtonVisible = !(newHeight > 500);
+            ShowPhotoList = !(newPos > 1500);
+            MapVM.ButtonVisible = !(newPos > 500);
 
-            HeightBorder = newHeight;
+            HeightBorder = newPos;
 
             await Task.Delay(10);
         }

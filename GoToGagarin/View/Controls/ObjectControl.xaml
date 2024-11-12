@@ -75,10 +75,14 @@
                     CornerRadius="32 32 0 0"
                     Height="{Binding HeightBorder}"
                     Background="{StaticResource BackgroundControl}">
+                
                 <Grid>
-                    <Button Template="{StaticResource GrabButtonTemplate}"
-                            Width="248" Height="6" Margin="0 8 0 0"
-                            VerticalAlignment="Top">
+                    <Border VerticalAlignment="Top"
+                            Height="100"
+                            Background="Transparent">
+                        <ContentPresenter ContentTemplate="{StaticResource GrabButton}"
+                                          VerticalAlignment="Top"
+                                          Margin="0 8 0 0"/>
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="MouseDown">
                                 <b:InvokeCommandAction
@@ -86,7 +90,7 @@
                                     PassEventArgsToCommand="True" />
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
-                    </Button>
+                    </Border>
                     <local:ObjectInfoControl Margin="0 32 0 0" Width="952" DataContext="{Binding }" />
                 </Grid>
             </Border>

@@ -9,7 +9,7 @@ public partial class SearchViewModel : ObservableObject
 {
     [ObservableProperty] private MapViewModel _mapViewModel;
     [ObservableProperty] private string? _searchObjectName;
-    [ObservableProperty] private ObservableCollection<MapObjectsModel>? _foundObjects;
+    [ObservableProperty] private ObservableCollection<MapObject>? _foundObjects;
 
     public SearchViewModel(MapViewModel mapViewModel)
     {
@@ -18,12 +18,11 @@ public partial class SearchViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SelectObject(MapObjectsModel model)
+    private void SelectObject(MapObject model)
     {
         MapViewModel.SelectObject = model;
         MapViewModel.Visible.SwitchControlVisible(ControlVisible.IsInfo);
         SearchObjectName = "";
-        OnPropertyChanged(nameof(MapViewModel.SelectObject));
     }
 
     [RelayCommand]
@@ -41,8 +40,8 @@ public partial class SearchViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(SearchObjectName)) return;
 
         var foundItems = MapViewModel.MapObjects
-            .Where(f => f.Title != null &&
-                        f.Title.Contains(SearchObjectName, StringComparison.OrdinalIgnoreCase));
+            .Where(f => 
+                f.Title.Contains(SearchObjectName, StringComparison.OrdinalIgnoreCase));
 
         foreach (var mapObjectsModel in foundItems)
         {

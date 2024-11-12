@@ -30,7 +30,7 @@
                 </b:Interaction.Behaviors>
             </ContentControl>
         </DataTemplate>
-        <DataTemplate x:Key="MapObjectTemplate" DataType="{x:Type models:MapObjectsModel}">
+        <DataTemplate x:Key="MapObjectTemplate" DataType="{x:Type models:MapObject}">
         </DataTemplate>
     </Window.Resources>
     <Viewbox>
@@ -53,7 +53,7 @@
                 DataContext="{Binding MapViewModel}"
                 Floors="{Binding Floors}"
                 Areas="{Binding Areas}"
-                MapObjects="{Binding MapObjects}"
+                MapObjects="{Binding AllMapObjects}"
                 TerminalArea="{Binding TerminalArea}"
                 SelectedFloor="{Binding SelectedFloor, Mode=TwoWay}"
                 StrokeThickness="25"

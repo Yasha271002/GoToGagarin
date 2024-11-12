@@ -6,8 +6,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
              mc:Ignorable="d"
+             xmlns:models="clr-namespace:GoToGagarin.Model"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-    <Grid>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadedCommand}"
+                                   CommandParameter="{Binding ElementName=MainGrid}"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type models:Paragraph}">
+            <Border Padding="16 24 16 16"
+                    CornerRadius="16"
+                    Background="{StaticResource DescriptionBackground}">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                               FontSize="34" FontWeight="Bold" Text="{Binding Title}"
+                               Foreground="{StaticResource ObjectNameForeground}" Margin="0 0 0 24" />
+                    <TextBlock Style="{StaticResource ObjectNameTextStyle}"
+                               FontSize="20" FontWeight="Normal"
+                               Text="{Binding Description}"
+                               Foreground="{StaticResource DescriptionForeGround}"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid
+        x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
             <RowDefinition Height="*" />
@@ -32,20 +57,16 @@
         <TabControl Grid.Row="1" Margin="0 32 0 0">
             <TabItem Header="Описание">
                 <Grid>
-                    <Border Padding="16 24 16 16"
-                            CornerRadius="16" VerticalAlignment="Top"
-                            Background="{StaticResource DescriptionBackground}">
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                       FontSize="34" FontWeight="Bold" Text="{Binding MapVM.SelectObject.Title}"
-                                       TextAlignment="Center"
-                                       Foreground="{StaticResource ObjectNameForeground}" Margin="0 0 0 24" />
-                            <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                                       FontSize="20" FontWeight="Normal"
-                                       Text="{Binding MapVM.SelectObject.Description}"
-                                       Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Center" />
-                        </StackPanel>
-                    </Border>
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Paragraphs}"
+                                  VerticalAlignment="Top">
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="ContentPresenter">
+                                    <Setter Property="Margin" Value="0 0 0 32"/>
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                        </ItemsControl>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <TabItem Header="Фото">
