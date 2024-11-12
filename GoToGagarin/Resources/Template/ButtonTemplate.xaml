@@ -98,4 +98,29 @@
             </Grid>
         </Grid>
     </ControlTemplate>
+
+
+    <Style TargetType="Button" x:Key="NextArrowButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="28" Background="#3F92B2" Width="56" Height="56" Margin="0 0 -27 0">
+                        <ContentPresenter ContentTemplate="{StaticResource NextIcon}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="BackArrowButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="28" Margin="-27 0 0 0" Background="#3F92B2" Width="56" Height="56">
+                        <ContentPresenter ContentTemplate="{StaticResource BackIcon}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

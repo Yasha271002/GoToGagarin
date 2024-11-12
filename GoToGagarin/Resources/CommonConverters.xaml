@@ -3,4 +3,5 @@
                     xmlns:converters="clr-namespace:GoToGagarin.Helpers.Converters">
     <converters:ImageConverter x:Key="ImageConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <converters:InvertableBooleanToVisibilityConverter x:Key="InvertableBooleanToVisibilityConverter"/>
 </ResourceDictionary>

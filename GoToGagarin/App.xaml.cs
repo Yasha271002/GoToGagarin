@@ -13,6 +13,7 @@ using MvvmNavigationLib.Services.ServiceCollectionExtensions;
 using MvvmNavigationLib.Stores;
 using CommunityToolkit.Mvvm.Messaging;
 using MvvmNavigationLib.Services;
+using GoToGagarin.Model;
 
 namespace GoToGagarin
 {
@@ -26,6 +27,7 @@ namespace GoToGagarin
             .ConfigureServices((context, services) =>
                 {
                     var host = context.Configuration.GetValue<string>("host");
+                    var terminalId = context.Configuration.GetValue<int>("terminalId");
 
                     var refitSettings = new RefitSettings
                     {
@@ -42,7 +44,10 @@ namespace GoToGagarin
 
                     services.AddSingleton<ModalNavigationStore>();
 
-                    services.AddSingleton<MapViewModel>();
+                    services.AddSingleton<MapViewModel>(s => new MapViewModel(
+                        s.GetRequiredService<ImageLoadingHttpClient>(),
+                        s.GetRequiredService<IMainApiClient>(),
+                        terminalId));
                     services.AddSingleton<SearchViewModel>();
                     services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<NavigationViewModel>();

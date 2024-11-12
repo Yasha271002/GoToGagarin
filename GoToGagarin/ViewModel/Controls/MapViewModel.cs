@@ -2,7 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using GoToGagarin.Model;
 using GoToGagarin.Utilities;
+using MapControlLib;
 using MapControlLib.Models;
+using System.Text.RegularExpressions;
 
 namespace GoToGagarin.ViewModel.Controls;
 
@@ -18,11 +20,16 @@ public partial class MapViewModel : ObservableObject
     [ObservableProperty] private Area _terminalArea;
 
     [ObservableProperty] private List<Terminal>? _terminals;
+    [ObservableProperty] private Terminal? _terminal;
     [ObservableProperty] private ControlVisibleModel _visible;
+
+    [ObservableProperty] private Map _map;
 
 
     private readonly IMainApiClient _client;
     private readonly ImageLoadingHttpClient _imageClient;
+
+    [ObservableProperty] private bool _buttonVisible;
 
     private readonly int _terminalId;
     [ObservableProperty] private bool _showNavigation;
@@ -39,29 +46,41 @@ public partial class MapViewModel : ObservableObject
 
     public MapViewModel(
         ImageLoadingHttpClient imageClient, 
-        IMainApiClient client)
+        IMainApiClient client, int terminalId)
     {
         _imageClient = imageClient;
         _client = client;
+        _terminalId = terminalId;
         _visible = new ControlVisibleModel();
         ZoomMin = 1.0;
         ZoomMax = 10.0;
     }
 
-    public async Task LoadData()
+    [RelayCommand]
+    private async Task Loaded(Map map)
     {
-        MapObjects = [];
-        Visible.SwitchControlVisible(ControlVisible.None);
+
+
         Floors = await _client.GetFloors();
         foreach (var floor in Floors)
         {
             floor.ImagePath = await _imageClient.DownloadImage(floor.Image);
         }
+        this.Map = map;
+        MapObjects = [];
+        Visible.SwitchControlVisible(ControlVisible.None);
+        
         Areas = await _client.GetAreas();
         MapObjects = await _client.GetMapObjects();
 
+        foreach (var mapObject in MapObjects)
+        {
+            mapObject.Description = FiltredText(mapObject.Description!);
+        }
+
         Terminals = await _client.GetTerminals();
-        TerminalArea = Areas.FirstOrDefault()!;
+        Terminal = Terminals[_terminalId];
+        TerminalArea = Areas.FirstOrDefault(f=>f.Id == Terminal.Area);
 
         foreach (var imagesModel in MapObjects.SelectMany(mapObjectsModel => mapObjectsModel.Images!))
         {
@@ -72,8 +91,28 @@ public partial class MapViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SelectMapObject()
+    private void SelectMapObject(MapObjectsModel f)
     {
+        if (f is not MapObjectsModel mapObject)
+            return;
+        SelectObject = mapObject;
+        Visible.SwitchControlVisible(ControlVisible.IsInfo);
+    }
 
+    private string FiltredText(string text)
+    {
+        return text == null ? string.Empty : Regex.Replace(text, @"[^а-яА-Я0-9\s.,:!?'\-]", "");
+    }
+
+    public async Task BuildRoute(MapObjectsModel SelectedMapObject, int routeType)
+    {
+        if (Terminal?.Node is null || SelectedMapObject?.Node is null) return;
+        var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
+        this.Map.Navigate(points);
+    }
+
+    public void StopBuild()
+    {
+        this.Map.CancelNavigation();
     }
 }

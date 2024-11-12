@@ -47,9 +47,11 @@ public partial class MainWindowViewModel : ObservableObject,
         _inactivityHelper.OnInactivity += _inactivityHelper_OnInactivity;
     }
 
-    public void _inactivityHelper_OnInactivity(int inactivityTime)
+    private void _inactivityHelper_OnInactivity(int inactivityTime)
     {
         if (CurrentModalViewModel is BasePopupViewModel popup) popup.CloseContainerCommand.Execute(false);
+        MapViewModel.StopBuild();
+        MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);
     }
 
     private void Timer(object? sender, EventArgs eventArgs)
@@ -71,7 +73,8 @@ public partial class MainWindowViewModel : ObservableObject,
     private async Task Loaded()
     {
         ExplorerHelper.KillExplorer();
-        await MapViewModel.LoadData();
+        MapViewModel.ButtonVisible = true;
+        //await MapViewModel.LoadData();
     }
 
     [RelayCommand]

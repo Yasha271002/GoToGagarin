@@ -47,6 +47,7 @@ public partial class ObjectInfoViewModel : ObservableObject
         ShowPhotoList = true;
         await Task.Delay(100);
         MapVM.Visible.SwitchControlVisible(ControlVisible.None);
+        MapVM.ButtonVisible = true;
     }
 
     [RelayCommand]
@@ -55,6 +56,7 @@ public partial class ObjectInfoViewModel : ObservableObject
         MapVM.Visible.SwitchControlVisible(ControlVisible.IsNavigate);
         HeightBorder = 298;
         ShowPhotoList = true;
+        MapVM.ButtonVisible = true;
     }
 
     [RelayCommand]
@@ -79,6 +81,7 @@ public partial class ObjectInfoViewModel : ObservableObject
             };
 
             ShowPhotoList = !(newHeight > 1500);
+            MapVM.ButtonVisible = !(newHeight > 500);
 
             HeightBorder = newHeight;
 

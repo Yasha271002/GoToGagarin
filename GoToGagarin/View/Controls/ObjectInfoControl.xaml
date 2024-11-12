@@ -38,11 +38,12 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
                                        FontSize="34" FontWeight="Bold" Text="{Binding MapVM.SelectObject.Title}"
+                                       TextAlignment="Center"
                                        Foreground="{StaticResource ObjectNameForeground}" Margin="0 0 0 24" />
                             <TextBlock Style="{StaticResource ObjectNameTextStyle}"
                                        FontSize="20" FontWeight="Normal"
                                        Text="{Binding MapVM.SelectObject.Description}"
-                                       Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Justify" />
+                                       Foreground="{StaticResource DescriptionForeGround}" TextAlignment="Center" />
                         </StackPanel>
                     </Border>
                 </Grid>

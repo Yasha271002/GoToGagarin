@@ -18,6 +18,6 @@ public interface IMainApiClient
     [Get("/api/terminals")]
     Task<List<Terminal>> GetTerminals();
 
-    //[Get("/api/navigate?from={fromNode}&to={toNode}")]
-    //Task<ApiResponse<List<NaviPoint>>> Navigate(int fromNode,int toNode);
+    [Get("/api/navigate?from={fromNode}&to={toNode}&routeType={routeType}")]
+    Task<List<NaviPoint>> Navigate(int fromNode, int toNode, int routeType);
 }

@@ -8,11 +8,28 @@
         xmlns:window="clr-namespace:GoToGagarin.ViewModel.Window"
         xmlns:mapControlLib="clr-namespace:MapControlLib;assembly=MapControlLib"
         xmlns:components="clr-namespace:MainComponents.Components;assembly=MainComponents"
+        xmlns:helpers="clr-namespace:GoToGagarin.Helpers"
+        xmlns:behaviours="clr-namespace:MapControlLib.Behaviours;assembly=MapControlLib"
+        xmlns:models="clr-namespace:GoToGagarin.Model"
         mc:Ignorable="d"
         WindowState="Maximized"
         WindowStyle="None"
         d:DataContext="{d:DesignInstance window:MainWindowViewModel}"
         Title="MainWindow">
+
+    <Window.Resources>
+        <helpers:MapObjectTemplateSelector x:Key="MapObjectTemplateSelector" />
+        <DataTemplate x:Key="TerminalTemplate" DataType="{x:Type models:Terminal}">
+            <ContentControl 
+                ContentTemplate="{StaticResource PeopleLocationIcon}">
+                <b:Interaction.Behaviors>
+                    <behaviours:MapElementsScaleBehavior ScaleKoef="4"/>
+                </b:Interaction.Behaviors>
+            </ContentControl>
+        </DataTemplate>
+        <DataTemplate x:Key="MapObjectTemplate" DataType="{x:Type models:MapObjectsModel}">
+        </DataTemplate>
+    </Window.Resources>
     <Viewbox>
         <Grid Width="1080" Height="1920">
             <b:Interaction.Triggers>
@@ -33,15 +50,39 @@
                 MapObjects="{Binding MapObjects}"
                 TerminalArea="{Binding TerminalArea}"
                 SelectedFloor="{Binding SelectedFloor, Mode=TwoWay}"
-                StrokeThickness="20"
-                StrokeDashArray="10 10"
+                StrokeThickness="25"
+                RouteColor="#E77972"
                 ArrowLength="50"
                 EndWithArrow="True"
                 StrokeDashCap="Round"
-                OnMapObjectSelectedCommand="{Binding SelectMapObjectCommand}" />
+                AreaContentTemplateSelector="{StaticResource MapObjectTemplateSelector}"
+                OnMapObjectSelectedCommand="{Binding SelectMapObjectCommand}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Loaded">
+                        <b:InvokeCommandAction Command="{Binding LoadedCommand}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=mapControlLib:Map}}" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </mapControlLib:Map>
 
+
+            <controls:ObjectControl DataContext="{Binding InfoViewModel}">
+                <controls:ObjectControl.Style>
+                    <Style TargetType="controls:ObjectControl">
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger
+                                Binding="{Binding MapVM.Visible.ControlVisible}"
+                                Value="IsInfo">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:ObjectControl.Style>
+            </controls:ObjectControl>
             <StackPanel Width="56" Height="200" HorizontalAlignment="Right"
-                        Margin="0 0 64 0 ">
+                        Margin="0 0 64 0 "
+                        Visibility="{Binding MapViewModel.ButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible" />
@@ -112,22 +153,9 @@
                         Background="{StaticResource BackgroundCloseButton}"
                         Foreground="White"
                         Padding="12"
-                        Command="{Binding SearchButtonCommand}" />
+                        Command="{Binding SearchButtonCommand}" 
+                        Visibility="{Binding MapViewModel.ShowNavigation, Converter={StaticResource InvertableBooleanToVisibilityConverter}, ConverterParameter=Inverted}"/>
             </StackPanel>
-            <controls:ObjectControl DataContext="{Binding InfoViewModel}">
-                <controls:ObjectControl.Style>
-                    <Style TargetType="controls:ObjectControl">
-                        <Setter Property="Visibility" Value="Hidden" />
-                        <Style.Triggers>
-                            <DataTrigger
-                                Binding="{Binding MapVM.Visible.ControlVisible}"
-                                Value="IsInfo">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </controls:ObjectControl.Style>
-            </controls:ObjectControl>
             <controls:SearchControl
                 VerticalAlignment="Bottom"
                 DataContext="{Binding SearchViewModel}">

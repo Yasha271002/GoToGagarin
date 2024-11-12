@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="Resources/Template/TextBoxTemplate.xaml" />
 
                 <ResourceDictionary Source="/MainComponents;component/themes/generic.xaml" />
+                <ResourceDictionary Source="/MapControlLib;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Resources/DataTemplates/Popups.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
