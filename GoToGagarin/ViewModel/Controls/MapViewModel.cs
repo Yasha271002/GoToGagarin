@@ -92,15 +92,20 @@ public partial class MapViewModel : ObservableObject
     private void SelectMapObject(MapObject f)
     {
         SelectObject = f;
+        ShowNavigation = false;
         Visible.SwitchControlVisible(ControlVisible.IsInfo);
     }
 
-   
+    public async Task<List<NaviPoint>> Route(MapObject SelectedMapObject, int routeType)
+    {
+        if (Terminal?.Node is null || SelectedMapObject.Node is null) return null;
+        var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
+        return points;
+    }
 
     public async Task BuildRoute(MapObject SelectedMapObject, int routeType)
     {
-        if (Terminal?.Node is null || SelectedMapObject.Node is null) return;
-        var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
+        var points = await Route(SelectedMapObject, routeType);
         this.Map.Navigate(points);
     }
 

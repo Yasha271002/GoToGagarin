@@ -72,18 +72,20 @@ public partial class ObjectInfoViewModel : ObservableObject
         
         while (e.ButtonState == MouseButtonState.Pressed)
         {
-            var newPos = 1920-e.GetPosition(MainGrid).Y;
-            newPos = newPos switch
+            var newPos = e.GetPosition(MainGrid);
+            var height = 1920;
+            var newHeight = (height) - newPos.Y * 1.8;
+            newHeight = newHeight switch
             {
-                > 1500 => 1500,
+                > 1870 => 1856,
                 < 278 => 298,
-                _ => newPos
+                _ => newHeight
             };
 
-            ShowPhotoList = !(newPos > 1500);
-            MapVM.ButtonVisible = !(newPos > 500);
+            ShowPhotoList = !(newHeight > 1500);
+            MapVM.ButtonVisible = !(newHeight > 500);
 
-            HeightBorder = newPos;
+            HeightBorder = newHeight;
 
             await Task.Delay(10);
         }

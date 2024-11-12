@@ -51,6 +51,7 @@ public partial class MainWindowViewModel : ObservableObject,
     {
         if (CurrentModalViewModel is BasePopupViewModel popup) popup.CloseContainerCommand.Execute(false);
         MapViewModel.StopBuild();
+        MapViewModel.ShowNavigation = false;
         MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);
     }
 
@@ -78,7 +79,7 @@ public partial class MainWindowViewModel : ObservableObject,
     }
 
     [RelayCommand]
-    private void Closing()=>ExplorerHelper.RunExplorer();
+    private void Closing() => ExplorerHelper.RunExplorer();
 
     [RelayCommand]
     private void StopTimer()

@@ -78,7 +78,7 @@
             <controls:ObjectControl DataContext="{Binding InfoViewModel}">
                 <controls:ObjectControl.Style>
                     <Style TargetType="controls:ObjectControl">
-                        <Setter Property="Visibility" Value="Hidden" />
+                        <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger
                                 Binding="{Binding MapVM.Visible.ControlVisible}"
@@ -98,7 +98,7 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible}"
                                          Value="IsSearch">
-                                <Setter Property="Visibility" Value="Hidden" />
+                                <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -170,7 +170,7 @@
                 DataContext="{Binding SearchViewModel}">
                 <controls:SearchControl.Style>
                     <Style TargetType="controls:SearchControl">
-                        <Setter Property="Visibility" Value="Hidden" />
+                        <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MapViewModel.Visible.ControlVisible}"
                                          Value="IsSearch">
@@ -184,7 +184,7 @@
                                         DataContext="{Binding NavigationViewModel}">
                 <controls:NavigationControl.Style>
                     <Style TargetType="controls:NavigationControl">
-                        <Setter Property="Visibility" Value="Hidden" />
+                        <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger
                                 Binding="{Binding MapViewModel.Visible.ControlVisible, UpdateSourceTrigger=PropertyChanged}"
