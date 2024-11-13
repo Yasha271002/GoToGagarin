@@ -16,7 +16,5 @@ namespace GoToGagarin.View.Controls
         {
             InitializeComponent();
         }
-
-       
     }
 }

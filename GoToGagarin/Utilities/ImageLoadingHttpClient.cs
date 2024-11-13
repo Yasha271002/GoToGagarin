@@ -39,5 +39,28 @@ namespace GoToGagarin.Utilities
             await response.Content.CopyToAsync(fs);
             return imageFile;
         }
+
+        public async Task<string> DownloadVideo(string url, string localPath = "Video", UriKind uriKind = UriKind.Absolute)
+        {
+            var filename = url.Replace('/', '_');
+            if (string.IsNullOrEmpty(filename))
+                return string.Empty;
+
+            var imageFile = Path.Combine(localPath, filename);
+
+            if (!Directory.Exists(localPath))
+                Directory.CreateDirectory(localPath);
+
+            if (File.Exists(imageFile)) return Path.GetFullPath(imageFile);
+
+            if (uriKind == UriKind.Relative) url = GetUrl(url);
+
+            var response = await _httpClient.GetAsync(url);
+            await using var fs = new FileStream(
+                Path.GetFullPath(imageFile),
+                FileMode.CreateNew);
+            await response.Content.CopyToAsync(fs);
+            return imageFile;
+        }
     }
 }

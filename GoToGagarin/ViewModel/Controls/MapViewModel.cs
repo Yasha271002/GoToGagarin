@@ -24,7 +24,26 @@ public partial class MapViewModel : ObservableObject
     [ObservableProperty] private Terminal? _terminal;
     [ObservableProperty] private ControlVisibleModel _visible;
 
+    [ObservableProperty] private List<InactivityModel> _inactivityModels;
+
     [ObservableProperty] private Map _map;
+    [ObservableProperty] private double _scrollPosition;
+
+
+    public const string RouteTypeCar = "На машине";
+    public const string RouteTypeWalk = "Пешком";
+
+    [ObservableProperty] private string? _routeType;
+    [ObservableProperty] private bool _carRouteIsVisible;
+    [ObservableProperty] private bool _walkRouteIsVisible;
+    [ObservableProperty] private bool _selectedWalkRoute;
+    [ObservableProperty] private bool _selectedCarRoute;
+
+    private readonly Dictionary<string, int> _routeTypeCodes = new()
+    {
+        { RouteTypeCar, 5 },
+        { RouteTypeWalk, 6 }
+    };
 
 
     private readonly IMainApiClient _client;
@@ -55,12 +74,14 @@ public partial class MapViewModel : ObservableObject
         _visible = new ControlVisibleModel();
         ZoomMin = 2.0;
         ZoomMax = 10.0;
+        RouteType = RouteTypeWalk;
     }
 
     [RelayCommand]
     private async Task Loaded(Map map)
     {
-
+        InactivityModels = await _client.GetVideo();
+        InactivityModels[0].media = await _imageClient.DownloadVideo(InactivityModels[0].media);
 
         Floors = await _client.GetFloors();
         foreach (var floor in Floors)
@@ -91,9 +112,73 @@ public partial class MapViewModel : ObservableObject
     [RelayCommand]
     private void SelectMapObject(MapObject f)
     {
+        StopBuild();
+        ScrollToStart();
+        ScrollPosition = 0.0;
         SelectObject = f;
         ShowNavigation = false;
         Visible.SwitchControlVisible(ControlVisible.IsInfo);
+    }
+
+    [RelayCommand]
+    public void ScrollToStart(){ ScrollToStartCommand.NotifyCanExecuteChanged(); }
+
+    public async void BuildRouteByType()
+    {
+        StopBuild();
+
+        var carPointTask = CheckRoute(5);
+        var walkPointTask = CheckRoute(6);
+
+        await Task.WhenAll(carPointTask, walkPointTask);
+
+        var carRouteAvailable = carPointTask.Result?.Count > 0;
+        var walkRouteAvailable = walkPointTask.Result?.Count > 0;
+
+        switch (carRouteAvailable)
+        {
+            case false when walkRouteAvailable:
+                RouteType = RouteTypeWalk;
+                SetRouteVisibility(false, true);
+                SelectedWalkRoute = true;
+                break;
+            case true when !walkRouteAvailable:
+                RouteType = RouteTypeCar;
+                SetRouteVisibility(true, false);
+                SelectedCarRoute = true;
+                break;
+            default:
+                RouteType ??= RouteTypeWalk;
+                SetRouteVisibility(true, true);
+                SelectedWalkRoute = true;
+                break;
+        }
+
+        await Task.Delay(500);// Анимация
+
+        BuildRoutes(RouteType);
+
+        await Task.Delay(500); // Анимация
+        ShowNavigation = true;
+    }
+
+    public void SetRouteVisibility(bool carVisible, bool walkVisible)
+    {
+        CarRouteIsVisible = carVisible;
+        WalkRouteIsVisible = walkVisible;
+    }
+
+
+    public async void BuildRoutes(string type)
+    {
+        if (_routeTypeCodes.TryGetValue(type, out int code))
+        {
+            await BuildRoute(SelectObject, code);
+        }
+        else
+        {
+            await BuildRoute(SelectObject, 6);
+        }
     }
 
     public async Task<List<NaviPoint>> Route(MapObject SelectedMapObject, int routeType)
@@ -101,6 +186,11 @@ public partial class MapViewModel : ObservableObject
         if (Terminal?.Node is null || SelectedMapObject.Node is null) return null;
         var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
         return points;
+    }
+
+    private async Task<List<NaviPoint>> CheckRoute(int type)
+    {
+        return await Route(SelectObject, type);
     }
 
     public async Task BuildRoute(MapObject SelectedMapObject, int routeType)

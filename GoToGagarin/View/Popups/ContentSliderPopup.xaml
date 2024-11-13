@@ -25,9 +25,12 @@
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                 </Grid>
+
                 <controls:ContentSlider ItemsSource="{Binding Images}"
                                         ArrowsVisibility="Visible"
                                         Width="952" Height="634"
+                                        NextCommand="{Binding NextTitleCommand}"
+                                        PreviousCommand="{Binding PreviewTitleCommand}"
                                         NextArrowStyle="{DynamicResource  NextArrowButton}"
                                         BackArrowStyle="{DynamicResource BackArrowButton}">
                     <controls:ContentSlider.ItemTemplate>
@@ -40,6 +43,8 @@
                         </DataTemplate>
                     </controls:ContentSlider.ItemTemplate>
                 </controls:ContentSlider>
+                <TextBlock Text="{Binding Image.Title}" Style="{StaticResource ObjectNameTextStyle}" VerticalAlignment="Top"
+                           FontSize="40" FontWeight="Medium" Foreground="White" Margin="0 64" TextWrapping="Wrap" HorizontalAlignment="Center"/>
                 <Button Template="{StaticResource ContentPresenterButtonTemplate}"
                         ContentTemplate="{StaticResource CloseIcon}"
                         Padding="8"

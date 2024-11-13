@@ -14,128 +14,11 @@
         Width="1080">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Height" Value="248" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding MapViewModel.ShowNavigation}"
-                                 Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <BeginStoryboard.Storyboard>
-                                    <Storyboard TargetProperty="Height">
-                                        <DoubleAnimation To="350"
-                                                         Duration="0:0:0.5"
-                                                         BeginTime="0:0:0.5" />
-                                    </Storyboard>
-                                </BeginStoryboard.Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <BeginStoryboard.Storyboard>
-                                    <Storyboard TargetProperty="Height">
-                                        <DoubleAnimation To="248"
-                                                         Duration="0:0:0.5"
-                                                         BeginTime="0:0:0.5" />
-                                    </Storyboard>
-                                </BeginStoryboard.Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                </Style.Triggers>
+                <Setter Property="Height" Value="300" />
             </Style>
         </Border.Style>
         <Grid Margin="64 32">
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Opacity" Value="1" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding MapViewModel.ShowNavigation}"
-                                         Value="False">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Opacity">
-                                                <DoubleAnimation
-                                                    To="1"
-                                                    Duration="0:0:0.8"
-                                                    BeginTime="0:0:0.8" />
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Opacity">
-                                                <DoubleAnimation
-                                                    To="0"
-                                                    Duration="0:0:0.8"
-                                                    BeginTime="0:0:0.8" />
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            Height="125">
-
-                    <ContentPresenter ContentTemplate="{StaticResource StatueIcon}" Width="75" VerticalAlignment="Top" />
-                    <TextBlock Style="{StaticResource ObjectNameTextStyle}"
-                               Foreground="{StaticResource ObjectNameForeground}"
-                               FontSize="40" FontWeight="Bold"
-                               Width="700" TextAlignment="Center"
-                               Margin="24 0 0 0"
-                               Text="{Binding MapViewModel.SelectObject.Title}" />
-                </StackPanel>
-
-                <Button Template="{StaticResource BuildRoute}"
-                        Command="{Binding BuildRouteCommand}"
-                        VerticalAlignment="Bottom" />
-            </Grid>
             <StackPanel>
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Opacity" Value="0" />
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding MapViewModel.ShowNavigation}"
-                                         Value="True">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Opacity">
-                                                <DoubleAnimation
-                                                    To="1"
-                                                    Duration="0:0:0.8"
-                                                    BeginTime="0:0:0.8" />
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <BeginStoryboard.Storyboard>
-                                            <Storyboard TargetProperty="Opacity">
-                                                <DoubleAnimation
-                                                    To="0"
-                                                    Duration="0:0:0.5"
-                                                    BeginTime="0:0:0.5" />
-                                            </Storyboard>
-                                        </BeginStoryboard.Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                            <Trigger Property="Opacity" Value="1">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
                 <Grid>
                     <Button Template="{StaticResource DoubleIconTemplate}" Width="24"
                             Height="88"
@@ -162,11 +45,11 @@
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                     <TabItem Header="Пешком"
-                             IsSelected="{Binding SelectedWalkRoute}"
-                             Visibility="{Binding WalkRouteIsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                             IsSelected="{Binding MapViewModel.SelectedWalkRoute}"
+                             Visibility="{Binding MapViewModel.WalkRouteIsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     <TabItem Header="На машине"
-                             IsSelected="{Binding SelectedCarRoute}"
-                             Visibility="{Binding CarRouteIsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                             IsSelected="{Binding MapViewModel.SelectedCarRoute}"
+                             Visibility="{Binding MapViewModel.CarRouteIsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </TabControl>
             </StackPanel>
             <Button Template="{StaticResource ContentPresenterButtonTemplate}"

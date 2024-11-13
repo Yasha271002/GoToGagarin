@@ -38,15 +38,6 @@
                            Foreground="White"
                            HorizontalAlignment="Left"
                            Margin="48 0 0 0" />
-                <TextBlock Text="12 минут"
-                           Style="{StaticResource ObjectNameTextStyle}"
-                           FontSize="20"
-                           FontWeight="Medium"
-                           Foreground="White"
-                           HorizontalAlignment="Right"
-                           Margin="0 0 48 0" />
-                <ContentPresenter ContentTemplate="{StaticResource WalkIcon}" Height="24"
-                                  HorizontalAlignment="Right" />
             </Grid>
         </Border>
     </ControlTemplate>
@@ -69,6 +60,9 @@
                     <Setter Property="Background" Value="{StaticResource BackgroundControl}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}" Value="True">
+                            <Setter Property="Background" Value="{StaticResource DescriptionBackground}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
                             <Setter Property="Background" Value="{StaticResource DescriptionBackground}" />
                         </DataTrigger>
                     </Style.Triggers>

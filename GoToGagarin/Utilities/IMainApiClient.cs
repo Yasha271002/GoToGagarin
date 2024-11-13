@@ -17,6 +17,9 @@ public interface IMainApiClient
 
     [Get("/api/terminals")]
     Task<List<Terminal>> GetTerminals();
+    
+    [Get("/api/standbies")]
+    Task<List<InactivityModel>> GetVideo();
 
     [Get("/api/navigate?from={fromNode}&to={toNode}&routeType={routeType}")]
     Task<List<NaviPoint>> Navigate(int fromNode, int toNode, int routeType);

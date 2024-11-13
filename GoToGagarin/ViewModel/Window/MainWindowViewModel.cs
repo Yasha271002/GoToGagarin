@@ -4,7 +4,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using GoToGagarin.Helpers;
 using GoToGagarin.Model;
 using GoToGagarin.ViewModel.Controls;
+using GoToGagarin.ViewModel.Popup;
 using MainComponents.Popups;
+using MvvmNavigationLib.Services;
 using MvvmNavigationLib.Stores;
 using System.Windows;
 using System.Windows.Threading;
@@ -24,21 +26,24 @@ public partial class MainWindowViewModel : ObservableObject,
     [ObservableProperty] private SearchViewModel _searchViewModel;
     [ObservableProperty] private MapViewModel _mapViewModel;
 
+    private ParameterNavigationService<InactivityPopupViewModel, ObjectInfoViewModel> _parameterNavigationService;
     private readonly ModalNavigationStore _modalNavigationStore;
 
     public ObservableObject? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;
     public bool IsModalOpen => _modalNavigationStore.CurrentViewModel is not null;
 
     public MainWindowViewModel(InactivityHelper inactivityHelper,
+        ParameterNavigationService<InactivityPopupViewModel, ObjectInfoViewModel> parameterNavigationService,
         IMessenger messenger,
         ObjectInfoViewModel infoViewModel,
         NavigationViewModel navigationViewModel,
-        SearchViewModel searchViewModel,
+    SearchViewModel searchViewModel,
         ModalNavigationStore modalNavigationStore,
         MapViewModel mapViewModel)
     {
         messenger.RegisterAll(this);
         _inactivityHelper = inactivityHelper;
+        _parameterNavigationService = parameterNavigationService;
         _infoViewModel = infoViewModel;
         _navigationViewModel = navigationViewModel;
         _searchViewModel = searchViewModel;
@@ -49,7 +54,7 @@ public partial class MainWindowViewModel : ObservableObject,
 
     private void _inactivityHelper_OnInactivity(int inactivityTime)
     {
-        if (CurrentModalViewModel is BasePopupViewModel popup) popup.CloseContainerCommand.Execute(false);
+        _parameterNavigationService.Navigate(InfoViewModel);
         MapViewModel.StopBuild();
         MapViewModel.ShowNavigation = false;
         MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);

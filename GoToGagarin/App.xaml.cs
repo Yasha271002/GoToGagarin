@@ -55,6 +55,8 @@ namespace GoToGagarin
 
                     services.AddParameterNavigationService<ContentSliderPopupViewModel, ModalNavigationStore, MapViewModel>(
                         s => param => new ContentSliderPopupViewModel(param, s.GetRequiredService<CloseNavigationService<ModalNavigationStore>>()));
+                    services.AddParameterNavigationService<InactivityPopupViewModel, ModalNavigationStore, ObjectInfoViewModel>(
+                        s => param => new InactivityPopupViewModel(param, s.GetRequiredService<CloseNavigationService<ModalNavigationStore>>()));
 
                     services.AddSingleton<MainWindow>(
                         s => new MainWindow

@@ -34,9 +34,6 @@
             <ContentControl 
                 ContentTemplate="{StaticResource TerminalIcon}"
                 Foreground="#CA2534">
-                <b:Interaction.Behaviors>
-                    <behaviours:MapElementsScaleBehavior ScaleKoef="4"/>
-                </b:Interaction.Behaviors>
             </ContentControl>
         </DataTemplate>
         <DataTemplate x:Key="MapObjectTemplate" DataType="{x:Type models:MapObject}">

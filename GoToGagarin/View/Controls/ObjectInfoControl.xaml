@@ -54,8 +54,8 @@
                     Command="{Binding CloseCommand}"
                     Width="40" Height="40" />
         </StackPanel>
-        <TabControl Grid.Row="1" Margin="0 32 0 0">
-            <TabItem Header="Описание">
+        <TabControl Grid.Row="1" Margin="32 32 32 0" >
+            <TabItem Header="Описание" IsSelected="{Binding SelectDescription}">
                 <Grid>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Paragraphs}"
@@ -69,13 +69,13 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="Фото">
-                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <TabItem Header="Фото" IsSelected="{Binding SelectPhoto}">
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Style="{StaticResource BaseScrollViewerStyle}"  Width="980">
                     <ItemsControl
                         ItemsSource="{Binding MapVM.SelectObject.Images}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Margin="0 32 0 0 " />
+                                <WrapPanel Margin="0 32 0 0 " Width="952" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>

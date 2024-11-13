@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Resources/Styles/TextStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/TabControlStyle.xaml" />
                 <ResourceDictionary Source="Resources/Styles/ScrollViewerStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ScrollViewerStyle.xaml"/>
 
                 <ResourceDictionary Source="Resources/Template/ButtonTemplate.xaml" />
                 <ResourceDictionary Source="Resources/Template/TextBoxTemplate.xaml" />

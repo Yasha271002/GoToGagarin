@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using CommunityToolkit.Mvvm.Input;
 using MainComponents.Panels;
 
 namespace GoToGagarin.View.Controls
@@ -12,6 +13,7 @@ namespace GoToGagarin.View.Controls
         Default,
         Indeterminate
     }
+
     public partial class ContentSlider : UserControl
     {
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
@@ -24,7 +26,8 @@ namespace GoToGagarin.View.Controls
         }
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            nameof(Orientation), typeof(Orientation), typeof(ContentSlider), new PropertyMetadata(System.Windows.Controls.Orientation.Horizontal));
+            nameof(Orientation), typeof(Orientation), typeof(ContentSlider),
+            new PropertyMetadata(System.Windows.Controls.Orientation.Horizontal));
 
         public Orientation Orientation
         {
@@ -33,7 +36,8 @@ namespace GoToGagarin.View.Controls
         }
 
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            nameof(ItemTemplate), typeof(DataTemplate), typeof(ContentSlider), new PropertyMetadata(default(DataTemplate)));
+            nameof(ItemTemplate), typeof(DataTemplate), typeof(ContentSlider),
+            new PropertyMetadata(default(DataTemplate)));
 
         public DataTemplate ItemTemplate
         {
@@ -58,6 +62,7 @@ namespace GoToGagarin.View.Controls
             get { return (Style)GetValue(BackArrowStyleProperty); }
             set { SetValue(BackArrowStyleProperty, value); }
         }
+
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
             nameof(Offset), typeof(double), typeof(ContentSlider), new PropertyMetadata(0.0));
 
@@ -74,6 +79,7 @@ namespace GoToGagarin.View.Controls
         {
             (d as ContentSlider).RaiseEvent(new RoutedEventArgs(IndexChangedEvent, e.NewValue));
         }
+
         public int CurrentIndex
         {
             get { return (int)GetValue(CurrentIndexProperty); }
@@ -99,7 +105,8 @@ namespace GoToGagarin.View.Controls
         }
 
         public static readonly DependencyProperty ArrowsVisibilityProperty = DependencyProperty.Register(
-            nameof(ArrowsVisibility), typeof(Visibility), typeof(ContentSlider), new PropertyMetadata(System.Windows.Visibility.Collapsed));
+            nameof(ArrowsVisibility), typeof(Visibility), typeof(ContentSlider),
+            new PropertyMetadata(System.Windows.Visibility.Collapsed));
 
         public Visibility ArrowsVisibility
         {
@@ -108,7 +115,8 @@ namespace GoToGagarin.View.Controls
         }
 
         public static readonly DependencyProperty SliderStateProperty = DependencyProperty.Register(
-            nameof(SliderState), typeof(SliderState), typeof(ContentSlider), new PropertyMetadata(default(SliderState)));
+            nameof(SliderState), typeof(SliderState), typeof(ContentSlider),
+            new PropertyMetadata(default(SliderState)));
 
         public SliderState SliderState
         {
@@ -117,13 +125,55 @@ namespace GoToGagarin.View.Controls
         }
 
         public static readonly DependencyProperty IndeterminateDurationProperty = DependencyProperty.Register(
-            nameof(IndeterminateDuration), typeof(Duration), typeof(ContentSlider), new PropertyMetadata(new Duration(TimeSpan.FromSeconds(5))));
+            nameof(IndeterminateDuration), typeof(Duration), typeof(ContentSlider),
+            new PropertyMetadata(new Duration(TimeSpan.FromSeconds(5))));
 
         public Duration IndeterminateDuration
         {
             get { return (Duration)GetValue(IndeterminateDurationProperty); }
             set { SetValue(IndeterminateDurationProperty, value); }
         }
+
+        public static readonly DependencyProperty NextCommandProperty =
+            DependencyProperty.Register(nameof(NextCommand), typeof(ICommand), typeof(ContentSlider),
+                new PropertyMetadata(null, OnNextCommandChanged));
+
+        public ICommand NextCommand
+        {
+            get => (ICommand)GetValue(NextCommandProperty);
+            set => SetValue(NextCommandProperty, value);
+        }
+
+        private static void OnNextCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as ContentSlider;
+            if (control._nextButton != null)
+            {
+                control._nextButton.Command = e.NewValue as ICommand;
+            }
+        }
+
+        public static readonly DependencyProperty PreviousCommandProperty =
+            DependencyProperty.Register(nameof(PreviousCommand), typeof(ICommand), typeof(ContentSlider),
+                new PropertyMetadata(null, OnPreviousCommandChanged));
+
+        public ICommand PreviousCommand
+        {
+            get => (ICommand)GetValue(PreviousCommandProperty);
+            set => SetValue(PreviousCommandProperty, value);
+        }
+
+        private static void OnPreviousCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as ContentSlider;
+            if (control._backButton != null)
+            {
+                control._backButton.Command = e.NewValue as ICommand;
+            }
+        }
+
+        private Button _nextButton;
+        private Button _backButton;
         private bool _isScrolling;
 
         public static readonly RoutedEvent IndexChangedEvent = EventManager.RegisterRoutedEvent(
@@ -141,11 +191,13 @@ namespace GoToGagarin.View.Controls
         public ContentSlider()
         {
             InitializeComponent();
+            _nextButton = this.FindName("NextButton") as Button;
+            _backButton = this.FindName("BackButton") as Button;
         }
 
         private async void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(SliderState == SliderState.Indeterminate) return;
+            if (SliderState == SliderState.Indeterminate) return;
             var startPos = e.GetPosition(this);
             while (e.ButtonState == MouseButtonState.Pressed)
             {
@@ -163,15 +215,22 @@ namespace GoToGagarin.View.Controls
                 }
                 startPos = pos;
                 await Task.Delay(10);
+                
             }
+            if (_isScrolling || SliderState == SliderState.Indeterminate) return;
+            _isScrolling = true;
+            await Anim();
+
+            _isScrolling = false;
         }
 
-       
+
         private async void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (_isScrolling || SliderState == SliderState.Indeterminate) return;
             _isScrolling = true;
             await Anim();
+
             _isScrolling = false;
         }
 
@@ -208,7 +267,6 @@ namespace GoToGagarin.View.Controls
             if (CurrentIndex < 0)
             {
                 CurrentIndex = ItemsControl.Items.Count - 1;
-                
             }
 
             if (Orientation == Orientation.Horizontal)
@@ -219,6 +277,7 @@ namespace GoToGagarin.View.Controls
             {
                 _loopPanel.GetCenterByIndexVert(CurrentIndex);
             }
+
             _isScrolling = true;
             if (Offset < CurrentCenterPoint)
             {
@@ -232,21 +291,19 @@ namespace GoToGagarin.View.Controls
                     center = _loopPanel._totalSize - _loopPanel.Children[^1].DesiredSize.Width;
                 }
 
-                var startPoint = -_loopPanel.Children[0].DesiredSize.Width / 2; 
+                var startPoint = -_loopPanel.Children[0].DesiredSize.Width / 2;
                 await Anim(250, new PowerEase() { Power = 2, EasingMode = EasingMode.EaseIn }, startPoint);
                 Offset = _loopPanel._totalSize - _loopPanel.Children[0].DesiredSize.Width / 2 - 1;
                 await Anim(250, new PowerEase() { Power = 2, EasingMode = EasingMode.EaseOut }, center);
-
             }
             else
             {
                 await Anim();
             }
-           
+
             _isScrolling = false;
-            
-            
         }
+
         private async void ScrollRight(object sender, RoutedEventArgs e)
         {
             if (_isScrolling) return;
@@ -264,7 +321,7 @@ namespace GoToGagarin.View.Controls
             {
                 _loopPanel.GetCenterByIndexVert(CurrentIndex);
             }
-            
+
             _isScrolling = true;
             if (Offset > CurrentCenterPoint)
             {
@@ -272,16 +329,17 @@ namespace GoToGagarin.View.Controls
                 await Anim(250, new PowerEase() { Power = 2, EasingMode = EasingMode.EaseIn }, startPoint);
                 Offset = -_loopPanel.Children[0].DesiredSize.Width / 2 + 1;
                 await Anim(250, new PowerEase() { Power = 2, EasingMode = EasingMode.EaseOut }, 0.0);
-
             }
             else
             {
                 await Anim();
             }
+
             _isScrolling = false;
         }
 
         private LoopPanel _loopPanel;
+
         private void LoopPanel_OnLoaded(object sender, RoutedEventArgs e)
         {
             _loopPanel = sender as LoopPanel;
@@ -295,6 +353,7 @@ namespace GoToGagarin.View.Controls
                 if(_loopPanel is not null && _loopPanel.Children.Count > 0 ) break;
                 await Task.Delay(100);
             }
+
             var startOffset = -_loopPanel.Children[0].DesiredSize.Width / 2;
             var endOffset = _loopPanel._totalSize - _loopPanel.Children[0].DesiredSize.Width / 2;
             var firstAnim = new DoubleAnimation()

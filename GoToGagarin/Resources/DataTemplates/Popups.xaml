@@ -5,4 +5,7 @@
     <DataTemplate DataType="{x:Type popups:ContentSliderPopupViewModel}">
         <popups1:ContentSliderPopup DataContext="{Binding}"/>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type popups:InactivityPopupViewModel}">
+        <popups1:InactivityPopup DataContext="{Binding}"/>
+    </DataTemplate>
 </ResourceDictionary>

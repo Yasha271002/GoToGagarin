@@ -6,9 +6,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:GoToGagarin.View.Controls"
              xmlns:controls="clr-namespace:GoToGagarin.ViewModel.Controls"
+             xmlns:helpers="clr-namespace:GoToGagarin.Helpers"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance controls:ObjectInfoViewModel}">
-    <Grid Width="1080" Height="1920" Background="Transparent">
+    <Grid Width="1080" Height="1920"  IsHitTestVisible="True">
         <StackPanel VerticalAlignment="Bottom">
             <ScrollViewer VerticalScrollBarVisibility="Hidden"
                           PanningMode="HorizontalOnly"
@@ -17,6 +18,9 @@
                             Converter={StaticResource BooleanToVisibilityConverter}}"
                           Margin="0 0 0 32"
                           HorizontalScrollBarVisibility="Hidden">
+                <b:Interaction.Behaviors>
+                    <helpers:ScrollViewerHelper ScrollToStartCommand="{Binding MapVM.ScrollToStartCommand}" />
+                </b:Interaction.Behaviors>
                 <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Images}"
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Center">
@@ -74,7 +78,8 @@
                     VerticalAlignment="Bottom"
                     CornerRadius="32 32 0 0"
                     Height="{Binding HeightBorder}"
-                    Background="{StaticResource BackgroundControl}">
+                    Background="{StaticResource BackgroundControl}"
+                    >
                 
                 <Grid>
                     <Border VerticalAlignment="Top"
@@ -91,7 +96,7 @@
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </Border>
-                    <local:ObjectInfoControl Margin="0 32 0 0" Width="952" DataContext="{Binding }" />
+                    <local:ObjectInfoControl Margin="0 32 0 0" Width="1080" DataContext="{Binding }" />
                 </Grid>
             </Border>
         </StackPanel>

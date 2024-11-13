@@ -21,6 +21,10 @@ public partial class ObjectInfoViewModel : ObservableObject
     private readonly AnimationHelper _animationHelper;
     [ObservableProperty] private bool _showPhotoList;
 
+    [ObservableProperty] private bool _selectDescription;
+    [ObservableProperty] private bool _selectPhoto;
+
+
     public ObjectInfoViewModel(MapViewModel mapViewModel,
         ParameterNavigationService<ContentSliderPopupViewModel, MapViewModel> parameterNavigationService)
     {
@@ -29,6 +33,8 @@ public partial class ObjectInfoViewModel : ObservableObject
         _animationHelper = new AnimationHelper();
         HeightBorder = 298;
         ShowPhotoList = true;
+        SelectDescription = true;
+        SelectPhoto = false;
     }
 
     [RelayCommand]
@@ -52,14 +58,22 @@ public partial class ObjectInfoViewModel : ObservableObject
         ShowPhotoList = true;
         await Task.Delay(100);
         MapVM.Visible.SwitchControlVisible(ControlVisible.None);
+        SelectPhoto = false;
+        SelectDescription = true;
         MapVM.ButtonVisible = true;
+        MapVM.ScrollPosition = 0;
+
+            MapVM.ScrollToStart();
     }
 
     [RelayCommand]
     private void Navigate()
     {
         MapVM.Visible.SwitchControlVisible(ControlVisible.IsNavigate);
+        MapVM.BuildRouteByType();
+        SelectDescription = true;
         HeightBorder = 298;
+        SelectPhoto = false;
         ShowPhotoList = true;
         MapVM.ButtonVisible = true;
     }
@@ -69,12 +83,15 @@ public partial class ObjectInfoViewModel : ObservableObject
     {
         if (f is not MouseButtonEventArgs e)
             return;
-        
+
+        var newPos = e.GetPosition(MainGrid);
+        var height = 1920;
+        var newHeight = (height) - newPos.Y * 1.8;
+
         while (e.ButtonState == MouseButtonState.Pressed)
         {
-            var newPos = e.GetPosition(MainGrid);
-            var height = 1920;
-            var newHeight = (height) - newPos.Y * 1.8;
+            newPos = e.GetPosition(MainGrid);
+            newHeight = (height) - newPos.Y * 1.8;
             newHeight = newHeight switch
             {
                 > 1870 => 1856,
@@ -89,5 +106,16 @@ public partial class ObjectInfoViewModel : ObservableObject
 
             await Task.Delay(10);
         }
+
+        HeightBorder = newHeight switch
+        {
+            > 500 and < 1380 => 1000,
+            > 800 and < 1920 => 1856,
+            < 500 => 298,
+            _ => HeightBorder
+        };
+
+        ShowPhotoList = !(HeightBorder > 1500);
+        MapVM.ButtonVisible = !(HeightBorder > 500);
     }
 }
