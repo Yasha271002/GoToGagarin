@@ -5,6 +5,9 @@ using GoToGagarin.Utilities;
 using MapControlLib;
 using MapControlLib.Models;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace GoToGagarin.ViewModel.Controls;
 
@@ -48,6 +51,7 @@ public partial class MapViewModel : ObservableObject
 
     private readonly IMainApiClient _client;
     private readonly ImageLoadingHttpClient _imageClient;
+    private readonly ILogger<MapViewModel> _logger;
 
     [ObservableProperty] private bool _buttonVisible;
 
@@ -66,8 +70,9 @@ public partial class MapViewModel : ObservableObject
 
     public MapViewModel(
         ImageLoadingHttpClient imageClient, 
-        IMainApiClient client, int terminalId)
+        IMainApiClient client, int terminalId, ILogger<MapViewModel> logger)
     {
+        _logger = logger;
         _imageClient = imageClient;
         _client = client;
         _terminalId = terminalId;
@@ -173,11 +178,25 @@ public partial class MapViewModel : ObservableObject
     {
         if (_routeTypeCodes.TryGetValue(type, out int code))
         {
-            await BuildRoute(SelectObject, code);
+            try
+            {
+                await BuildRoute(SelectObject, code);
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
         }
         else
         {
-            await BuildRoute(SelectObject, 6);
+            try
+            {
+                await BuildRoute(SelectObject, 6);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,e.Message);
+            }
         }
     }
 

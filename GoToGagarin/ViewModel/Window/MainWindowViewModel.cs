@@ -79,6 +79,7 @@ public partial class MainWindowViewModel : ObservableObject,
     private void Loaded()
     {
         ExplorerHelper.KillExplorer();
+        MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);
         MapViewModel.ButtonVisible = true;
         //await MapViewModel.LoadData();
     }

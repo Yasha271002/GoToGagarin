@@ -25,8 +25,9 @@ public partial class NavigationViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void Close()
+    private void Close()
     {
+        MapViewModel.StopBuild();
         MapViewModel.ShowNavigation = false;
         MapViewModel.SetRouteVisibility(true, true);
         MapViewModel.Visible.ControlVisible = ControlVisible.None;

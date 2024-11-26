@@ -14,6 +14,9 @@ using MvvmNavigationLib.Stores;
 using CommunityToolkit.Mvvm.Messaging;
 using MvvmNavigationLib.Services;
 using GoToGagarin.Model;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace GoToGagarin
 {
@@ -28,16 +31,21 @@ namespace GoToGagarin
                 {
                     var host = context.Configuration.GetValue<string>("host");
                     var terminalId = context.Configuration.GetValue<int>("terminalId");
-
                     var refitSettings = new RefitSettings
                     {
-                        ContentSerializer = new NewtonsoftJsonContentSerializer()
+                        ContentSerializer = new NewtonsoftJsonContentSerializer(),
                     };
+                    services.AddSerilog((_, loggerConfiguration) =>
+                        loggerConfiguration.ReadFrom.Configuration(context.Configuration));
                     services.AddUtilityNavigationServices<ModalNavigationStore>();
                     services.AddSingleton<IMessenger>(_ => new WeakReferenceMessenger());
                     services.AddHttpClient<ImageLoadingHttpClient>(c => c.BaseAddress = new Uri(host ?? string.Empty));
                     services.AddRefitClient<IMainApiClient>(settings: refitSettings)
-                        .ConfigureHttpClient(c => c.BaseAddress = new Uri(host ?? string.Empty));
+                        .ConfigureHttpClient(c =>
+                        {
+                            c.BaseAddress = new Uri(host ?? string.Empty);
+                            c.Timeout = TimeSpan.FromMinutes(10);
+                        });
 
                     var inactivityTime = context.Configuration.GetValue<int>("inactivityTime");
                     services.AddSingleton<InactivityHelper>(_ => new InactivityHelper(inactivityTime));
@@ -47,7 +55,8 @@ namespace GoToGagarin
                     services.AddSingleton<MapViewModel>(s => new MapViewModel(
                         s.GetRequiredService<ImageLoadingHttpClient>(),
                         s.GetRequiredService<IMainApiClient>(),
-                        terminalId));
+                        terminalId,
+                        s.GetRequiredService<ILogger<MapViewModel>>()));
                     services.AddSingleton<SearchViewModel>();
                     services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<NavigationViewModel>();
