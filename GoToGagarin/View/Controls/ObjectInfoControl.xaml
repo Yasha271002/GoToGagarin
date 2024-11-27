@@ -11,7 +11,7 @@
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding LoadedCommand}"
-                                   CommandParameter="{Binding ElementName=MainGrid}"/>
+                                   CommandParameter="{Binding ElementName=MainGrid}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
     <UserControl.Resources>
@@ -26,7 +26,7 @@
                     <TextBlock Style="{StaticResource ObjectNameTextStyle}"
                                FontSize="20" FontWeight="Normal"
                                Text="{Binding Description}"
-                               Foreground="{StaticResource DescriptionForeGround}"/>
+                               Foreground="{StaticResource DescriptionForeGround}" />
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -34,35 +34,29 @@
     <Grid
         x:Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="164" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="120" />
+            <RowDefinition Height="164" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center"
-                    Margin="0 46 0 0" VerticalAlignment="Center">
+                    Margin="0 06 0 0" VerticalAlignment="Center">
             <ContentPresenter ContentTemplate="{StaticResource MuseumIcon}" Width="64" Height="64" />
             <TextBlock Text="{Binding MapVM.SelectObject.Title}"
                        Style="{StaticResource ObjectNameTextStyle}"
                        FontWeight="Bold" Margin="24 0" HorizontalAlignment="Center"
                        TextAlignment="Center" Width="700" VerticalAlignment="Center"
                        FontSize="40" Foreground="{StaticResource ObjectNameForeground}" />
-            <Button Template="{StaticResource ContentPresenterButtonTemplate}"
-                    ContentTemplate="{DynamicResource CloseIcon}"
-                    Background="{StaticResource BackgroundCloseButton}"
-                    Padding="8"
-                    Command="{Binding CloseCommand}"
-                    Width="40" Height="40" />
         </StackPanel>
         <TabControl Grid.Row="1" Margin="32 32 32 0" >
             <TabItem Header="Описание" IsSelected="{Binding SelectDescription}">
                 <Grid>
                     <ScrollViewer>
                         <ItemsControl ItemsSource="{Binding MapVM.SelectObject.Paragraphs}"
-                                  VerticalAlignment="Top">
+                                      VerticalAlignment="Top">
                             <ItemsControl.ItemContainerStyle>
                                 <Style TargetType="ContentPresenter">
-                                    <Setter Property="Margin" Value="0 0 0 32"/>
+                                    <Setter Property="Margin" Value="0 0 0 32" />
                                 </Style>
                             </ItemsControl.ItemContainerStyle>
                         </ItemsControl>
@@ -70,7 +64,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Фото" IsSelected="{Binding SelectPhoto}">
-                <ScrollViewer VerticalScrollBarVisibility="Visible" Style="{StaticResource BaseScrollViewerStyle}"  Width="980">
+                <ScrollViewer VerticalScrollBarVisibility="Visible" Style="{StaticResource BaseScrollViewerStyle}"
+                              Width="980">
                     <ItemsControl
                         ItemsSource="{Binding MapVM.SelectObject.Images}">
                         <ItemsControl.ItemsPanel>
@@ -80,11 +75,12 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding DataContext.OpenContentSliderCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        Width="472" Height="466">
+                                <Button
+                                    Command="{Binding DataContext.OpenContentSliderCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    Width="472" Height="466">
                                     <Button.Template>
                                         <ControlTemplate>
-                                            <Border  Margin="2"
+                                            <Border Margin="2"
                                                     CornerRadius="16">
                                                 <Border.Background>
                                                     <SolidColorBrush Color="#3F92B2" Opacity="0.4" />
@@ -138,9 +134,24 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Button Grid.Row="2" Margin="64 32 64 32"
-                VerticalAlignment="Bottom"
-                Template="{StaticResource BuildRoute}"
-                Command="{Binding NavigateCommand}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2" 
+                    Margin="64 0 64 32">
+            <Button Margin="0 0 16 0"
+                    VerticalAlignment="Bottom"
+                    Height="96" Width="306"
+                    Template="{StaticResource BuildRoute}"
+                    Command="{Binding NavigateCommand}" />
+            <Button Margin="0 0 16 0"
+                    VerticalAlignment="Bottom"
+                    Height="96" Width="306"
+                    Command="{Binding IsDraggingCommand}"
+                    Template="{StaticResource DescriptionButton}" />
+            <Button Template="{StaticResource CloseButton}"
+                    ContentTemplate="{DynamicResource CloseIcon}"
+                    Background="{StaticResource BackgroundCloseButton}"
+                    Padding="8" FontWeight="Medium" VerticalAlignment="Bottom"
+                    Command="{Binding CloseCommand}"
+                    Width="306" Height="96"  />
+        </StackPanel>
     </Grid>
 </UserControl>

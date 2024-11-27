@@ -16,7 +16,7 @@
             <Grid>
                 <ItemsControl ItemsSource="{Binding FoundObjects}"
                               VerticalAlignment="Bottom"
-                              Margin="0 0 0 56">
+                              Margin="0 0 0 83">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel />
@@ -26,7 +26,7 @@
                         <DataTemplate>
                             <Button Template="{DynamicResource SearchObjectButton}"
                                     Margin="5"
-                                    Height="56" 
+                                    Height="72" 
                                     Command="{Binding DataContext.SelectObjectCommand,RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
                                     CommandParameter="{Binding }"/>
                         </DataTemplate>
@@ -35,7 +35,7 @@
                 <TextBox Template="{StaticResource TextBoxTemplate}"
                          Width="952"
                          x:Name="SearchTextBox"
-                         Height="56"
+                         Height="84"
                          VerticalAlignment="Bottom"
                          VerticalContentAlignment="Center"
                          HorizontalContentAlignment="Left"
@@ -43,7 +43,7 @@
                          Tag="Поиск"
                          Text="{Binding SearchObjectName, Mode=TwoWay,
                                                             UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="20">
+                         FontSize="28">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="TextChanged">
                             <b:InvokeCommandAction Command="{Binding TextChangedCommand}" />
@@ -59,7 +59,7 @@
             CornerRadius="32 32 0 0"
             Height="829">
             <views:KeyboardControl Margin=" 0 64"
-                                   KeyBaseHeight="72"
+                                   KeyBaseHeight="84"
                                    KeyBaseWidth="72" >
             </views:KeyboardControl>
         </Border>

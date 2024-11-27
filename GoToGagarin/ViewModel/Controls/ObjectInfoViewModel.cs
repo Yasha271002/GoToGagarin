@@ -31,7 +31,7 @@ public partial class ObjectInfoViewModel : ObservableObject
         _mapVM = mapViewModel;
         _parameterNavigationService = parameterNavigationService;
         _animationHelper = new AnimationHelper();
-        HeightBorder = 298;
+        HeightBorder = 306;
         ShowPhotoList = true;
         SelectDescription = true;
         SelectPhoto = false;
@@ -49,7 +49,7 @@ public partial class ObjectInfoViewModel : ObservableObject
     [RelayCommand]
     private async void Close()
     {
-        for (var i = HeightBorder; HeightBorder > 298; i -= 20)
+        for (var i = HeightBorder; HeightBorder > 306; i -= 20)
         {
             HeightBorder = _animationHelper.Animation(HeightBorder);
             await Task.Delay(10);
@@ -60,6 +60,7 @@ public partial class ObjectInfoViewModel : ObservableObject
         MapVM.Visible.SwitchControlVisible(ControlVisible.None);
         SelectPhoto = false;
         SelectDescription = true;
+        HeightBorder = 306;
         MapVM.ButtonVisible = true;
         MapVM.ScrollPosition = 0;
 
@@ -72,50 +73,73 @@ public partial class ObjectInfoViewModel : ObservableObject
         MapVM.Visible.SwitchControlVisible(ControlVisible.IsNavigate);
         MapVM.BuildRouteByType();
         SelectDescription = true;
-        HeightBorder = 298;
+        HeightBorder = 306;
         SelectPhoto = false;
         ShowPhotoList = true;
         MapVM.ButtonVisible = true;
     }
 
+    //[RelayCommand]
+    //private async void IsDragging(MouseButtonEventArgs f)
+    //{
+    //    if (f is not MouseButtonEventArgs e)
+    //        return;
+
+    //    var newPos = e.GetPosition(MainGrid);
+    //    var height = 1920;
+    //    var newHeight = (height) - newPos.Y * 1.8;
+
+
+    //    ShowPhotoList = false;
+    //    MapVM.ButtonVisible = false;
+
+    //    for (var i = HeightBorder; HeightBorder <= 1856; i += 20)
+    //    {
+    //        HeightBorder = _animationHelper.AnimationUp(HeightBorder);
+    //        await Task.Delay(10);
+    //    }
+
+    //    //while (e.ButtonState == MouseButtonState.Pressed)
+    //    //{
+    //    //    newPos = e.GetPosition(MainGrid);
+    //    //    newHeight = (height) - newPos.Y * 1.8;
+    //    //    newHeight = newHeight switch
+    //    //    {
+    //    //        > 1870 => 1856,
+    //    //        < 278 => 298,
+    //    //        _ => newHeight
+    //    //    };
+
+    //    //    ShowPhotoList = !(newHeight > 1500);
+    //    //    MapVM.ButtonVisible = !(newHeight > 500);
+
+    //    //    HeightBorder = newHeight;
+
+    //    //    await Task.Delay(10);
+    //    //}
+
+    //    //HeightBorder = newHeight switch
+    //    //{
+    //    //    > 500 and < 1380 => 1000,
+    //    //    > 800 and < 1920 => 1856,
+    //    //    < 500 => 298,
+    //    //    _ => HeightBorder
+    //    //};
+
+    //    //ShowPhotoList = !(HeightBorder > 1500);
+    //    //MapVM.ButtonVisible = !(HeightBorder > 500);
+    //}
+
     [RelayCommand]
-    private async void IsDragging(MouseButtonEventArgs f)
+    private async void IsDragging()
     {
-        if (f is not MouseButtonEventArgs e)
-            return;
+        ShowPhotoList = false;
+        MapVM.ButtonVisible = false;
 
-        var newPos = e.GetPosition(MainGrid);
-        var height = 1920;
-        var newHeight = (height) - newPos.Y * 1.8;
-
-        while (e.ButtonState == MouseButtonState.Pressed)
+        for (var i = HeightBorder; HeightBorder <= 1856; i += 20)
         {
-            newPos = e.GetPosition(MainGrid);
-            newHeight = (height) - newPos.Y * 1.8;
-            newHeight = newHeight switch
-            {
-                > 1870 => 1856,
-                < 278 => 298,
-                _ => newHeight
-            };
-
-            ShowPhotoList = !(newHeight > 1500);
-            MapVM.ButtonVisible = !(newHeight > 500);
-
-            HeightBorder = newHeight;
-
+            HeightBorder = _animationHelper.AnimationUp(HeightBorder);
             await Task.Delay(10);
         }
-
-        HeightBorder = newHeight switch
-        {
-            > 500 and < 1380 => 1000,
-            > 800 and < 1920 => 1856,
-            < 500 => 298,
-            _ => HeightBorder
-        };
-
-        ShowPhotoList = !(HeightBorder > 1500);
-        MapVM.ButtonVisible = !(HeightBorder > 500);
     }
 }

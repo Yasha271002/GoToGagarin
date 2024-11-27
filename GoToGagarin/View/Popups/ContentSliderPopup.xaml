@@ -53,7 +53,7 @@
                         HorizontalAlignment="Right"
                         Command="{Binding CloseContainerCommand}"
                         CommandParameter="False"
-                        Width="56" Height="56" />
+                        Width="86" Height="86" />
             </Grid>
         </Border>
     </popupContainers:OpacityPopupContainer>

@@ -9,7 +9,7 @@
                     <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="True">
                         <Border DockPanel.Dock="{TemplateBinding TabStripPlacement}"
                                 CornerRadius="16"
-                                Background="#F9ECDC" Height="68">
+                                Background="#F9ECDC" Height="112">
                             <TabPanel
                                 Name="HeaderPanel"
                                 Panel.ZIndex="1"
@@ -46,7 +46,7 @@
                     <Border x:Name="PART_Border" Background="{TemplateBinding Background}"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="0,0,8,0" CornerRadius="16" Padding="50,0,50,0"
-                            Width="400" Height="52">
+                            Width="400" Height="96">
 
                         <TextBlock Text="{TemplateBinding Header}"
                                    TextAlignment="Center"

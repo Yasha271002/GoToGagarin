@@ -30,6 +30,7 @@ public partial class SearchViewModel : ObservableObject
     {
         MapViewModel.Visible.SwitchControlVisible(ControlVisible.None);
         SearchObjectName = "";
+        MapViewModel.ButtonVisible = true;
     }
 
     [RelayCommand]

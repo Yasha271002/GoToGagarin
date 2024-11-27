@@ -7,4 +7,10 @@ public class AnimationHelper
         height -= 20;
         return height;
     }
+
+    public double AnimationUp(double height)
+    {
+        height += 20;
+        return height;
+    }
 }

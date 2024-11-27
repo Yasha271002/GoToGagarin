@@ -72,6 +72,7 @@ public partial class MainWindowViewModel : ObservableObject,
     {
         MapViewModel.StopBuild();
         MapViewModel.Visible.ControlVisible = ControlVisible.IsSearch;
+        MapViewModel.ButtonVisible = false;
         OnPropertyChanged(nameof(MapViewModel.Visible));
     }
 

@@ -9,7 +9,7 @@
             <Grid>
                 <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
                     <ContentPresenter ContentTemplate="{StaticResource SearchIcon}"
-                                      Margin="16"/>
+                                      Margin="16" Width="36"/>
                     <TextBlock
                         Text="{TemplateBinding Tag}"
                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -29,7 +29,7 @@
                 </StackPanel>
                 <ScrollViewer
                     Padding="0"
-                    Margin="48 0 0 0"
+                    Margin="68 0 0 0"
                     x:Name="PART_ContentHost">
                 </ScrollViewer>
                 <Button Template="{StaticResource ContentPresenterButtonTemplate}"
@@ -37,8 +37,8 @@
                         Background="{StaticResource BackgroundCloseButton}"
                         Command="{Binding CloseCommand}"
                         Padding="8"
-                        Width="40" Height="40"
-                        Margin="904 0 0 0" />
+                        Width="64" Height="64"
+                        Margin="856 0 0 0" />
             </Grid>
         </Border>
     </ControlTemplate>

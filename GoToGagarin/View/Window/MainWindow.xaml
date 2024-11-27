@@ -86,7 +86,7 @@
                     </Style>
                 </controls:ObjectControl.Style>
             </controls:ObjectControl>
-            <StackPanel Width="56" Height="200" HorizontalAlignment="Right"
+            <StackPanel Width="84" Height="320" HorizontalAlignment="Right"
                         Margin="0 0 64 0 "
                         Visibility="{Binding MapViewModel.ButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel.Style>
@@ -153,7 +153,7 @@
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                 </Button>
-                <Button Template="{StaticResource ContentPresenterButtonTemplate}"
+                <Button Template="{StaticResource SearchButton}"
                         VerticalAlignment="Bottom"
                         ContentTemplate="{StaticResource SearchForegroundIcon}"
                         Background="{StaticResource BackgroundCloseButton}"
