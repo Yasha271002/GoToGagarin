@@ -51,7 +51,7 @@ public partial class MapViewModel : ObservableObject
 
     private readonly IMainApiClient _client;
     private readonly ImageLoadingHttpClient _imageClient;
-    private readonly ILogger<MapViewModel> _logger;
+    private readonly ILogger _logger;
 
     [ObservableProperty] private bool _buttonVisible;
 
@@ -70,7 +70,7 @@ public partial class MapViewModel : ObservableObject
 
     public MapViewModel(
         ImageLoadingHttpClient imageClient, 
-        IMainApiClient client, int terminalId, ILogger<MapViewModel> logger)
+        IMainApiClient client, int terminalId, ILogger logger)
     {
         _logger = logger;
         _imageClient = imageClient;
@@ -132,13 +132,18 @@ public partial class MapViewModel : ObservableObject
     {
         StopBuild();
 
+
+
         var carPointTask = CheckRoute(5);
         var walkPointTask = CheckRoute(6);
 
-        await Task.WhenAll(carPointTask, walkPointTask);
+        var result = await Task.WhenAll(carPointTask, walkPointTask);
 
-        var carRouteAvailable = carPointTask.Result?.Count > 0;
-        var walkRouteAvailable = walkPointTask.Result?.Count > 0;
+        var carRouteAvailable = result[0].Count > 0;
+        var walkRouteAvailable = result[1].Count > 0;
+
+        //var carRouteAvailable = carPointTask.Result?.Count > 0;
+        //var walkRouteAvailable = walkPointTask.Result?.Count > 0;
 
         switch (carRouteAvailable)
         {
@@ -184,7 +189,7 @@ public partial class MapViewModel : ObservableObject
             }
             catch(Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.Error(e, e.Message);
             }
         }
         else
@@ -195,7 +200,7 @@ public partial class MapViewModel : ObservableObject
             }
             catch (Exception e)
             {
-                _logger.LogError(e,e.Message);
+                _logger.Error(e,e.Message);
             }
         }
     }
@@ -203,19 +208,45 @@ public partial class MapViewModel : ObservableObject
     public async Task<List<NaviPoint>> Route(MapObject SelectedMapObject, int routeType)
     {
         if (Terminal?.Node is null || SelectedMapObject.Node is null) return null;
-        var points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
+        var points = new List<NaviPoint>(); 
+        try
+        {
+            points = await _client.Navigate((int)Terminal.Node, (int)SelectedMapObject.Node, routeType);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, e.Message);
+        }
         return points;
     }
 
     private async Task<List<NaviPoint>> CheckRoute(int type)
     {
-        return await Route(SelectObject, type);
+        var p = new List<NaviPoint>();
+        try
+        {
+            p = await Route(SelectObject, type);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, e.Message);
+        }
+
+        return p;
     }
 
     public async Task BuildRoute(MapObject SelectedMapObject, int routeType)
     {
-        var points = await Route(SelectedMapObject, routeType);
-        this.Map.Navigate(points);
+        var points = new List<NaviPoint>();
+        try
+        {
+            points = await Route(SelectedMapObject, routeType);
+            this.Map.Navigate(points);
+        }
+        catch (Exception e)
+        {
+           _logger.Error(e, e.Message);
+        }
     }
 
     public void StopBuild()

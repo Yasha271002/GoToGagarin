@@ -25,6 +25,11 @@ namespace GoToGagarin
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+        }
+
         private readonly IHost _host = Host.CreateDefaultBuilder()
             .ConfigureHostConfiguration(s => s.AddJsonFile("appsettings.json"))
             .ConfigureServices((context, services) =>
@@ -56,7 +61,7 @@ namespace GoToGagarin
                         s.GetRequiredService<ImageLoadingHttpClient>(),
                         s.GetRequiredService<IMainApiClient>(),
                         terminalId,
-                        s.GetRequiredService<ILogger<MapViewModel>>()));
+                        s.GetRequiredService<ILogger>()));
                     services.AddSingleton<SearchViewModel>();
                     services.AddSingleton<ObjectInfoViewModel>();
                     services.AddSingleton<NavigationViewModel>();
@@ -74,6 +79,14 @@ namespace GoToGagarin
                         });
                 }
             ).Build();
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            if (DebugHelper.IsRunningInDebugMode) throw e.Exception;
+            var logger = _host.Services.GetRequiredService<ILogger>();
+            logger.Error(e.Exception, "Неизвестная ошибка");
+            e.Handled = true;
+        }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
